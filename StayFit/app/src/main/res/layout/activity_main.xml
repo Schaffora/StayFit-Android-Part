@@ -23,23 +23,13 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Username"
-        android:ems="10"
-        android:id="@+id/etLogUsername"
-        android:layout_alignTop="@+id/textView2"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="113dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:inputType="textPassword"
         android:ems="10"
         android:layout_centerVertical="true"
         android:layout_alignEnd="@+id/etLogUsername"
         android:id="@+id/etLogPassword"
-        android:text="Password" />
+        android:hint="Password"
+        android:text="1000" />
 
     <Button
         android:text="Log In"
@@ -60,5 +50,17 @@
         android:id="@+id/btnLobSubscribe"
         android:layout_alignStart="@+id/btnLogLogIn"
         android:layout_alignEnd="@+id/btnLogLogIn" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPersonName"
+        android:ems="10"
+        android:id="@+id/etLogUsername"
+        android:hint="Username"
+        android:layout_above="@+id/etLogPassword"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="25dp"
+        android:text="admin" />
 
 </RelativeLayout>
