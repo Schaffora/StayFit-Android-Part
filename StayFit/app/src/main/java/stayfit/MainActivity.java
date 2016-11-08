@@ -1,11 +1,10 @@
-package com.projects.raphaelschaffo.examplewithintents;
+package stayfit;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -32,13 +31,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(stayfit.R.layout.activity_main);
 
         /* Component Initialisation */
-        btnLogSubscribe = (Button) findViewById(R.id.btnLobSubscribe);
-        btnLogLogIn = (Button)findViewById(R.id.btnLogLogIn);
-        etLogPassword=(EditText)findViewById(R.id.etLogPassword);
-        etLogUserName=(EditText)findViewById(R.id.etLogUsername);
+        btnLogSubscribe = (Button) findViewById(stayfit.R.id.btnLobSubscribe);
+        btnLogLogIn = (Button)findViewById(stayfit.R.id.btnLogLogIn);
+        etLogPassword=(EditText)findViewById(stayfit.R.id.etLogPassword);
+        etLogUserName=(EditText)findViewById(stayfit.R.id.etLogUsername);
 
 
         /*Component control part */
@@ -92,6 +91,12 @@ public class MainActivity extends AppCompatActivity {
                     Log.i("ActivityResult", "Result_OK");
                     Toast.makeText(this, "User connection successed", Toast.LENGTH_LONG).show();
                     firstConnect=false;
+                    if(etLogPassword.getText().toString().equals(Password) && etLogUserName.getText().toString().equals(Username))
+                    {
+                        Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                        startActivityForResult(intent, ACTIVITY_RESULT_HOME);
+
+                    }
                 }
                 break;
             default:

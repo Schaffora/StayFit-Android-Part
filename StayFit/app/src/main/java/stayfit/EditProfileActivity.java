@@ -1,4 +1,4 @@
-package com.projects.raphaelschaffo.examplewithintents;
+package stayfit;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -30,17 +30,17 @@ public class EditProfileActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_profile);
+        setContentView(stayfit.R.layout.activity_edit_profile);
 
         /* Component Initialisation*/
-        btnProOk = (Button)findViewById(R.id.btnProOk);
-        etProBirthDate= (DatePicker) findViewById(R.id.etProBirthDate);
-        rbtnProMen = (RadioButton)findViewById(R.id.rbtnProMen);
-        rbtnProWomen =(RadioButton)findViewById(R.id.rbtnProWomen);
-        rbtngGender= (RadioGroup) findViewById(R.id.rbtngGender);
-        npSize = (NumberPicker) findViewById(R.id.npSize);
-        npWeight = (NumberPicker) findViewById(R.id.npWeight);
-        npWeightKG = (NumberPicker) findViewById(R.id.npWeightKG);
+        btnProOk = (Button)findViewById(stayfit.R.id.btnProOk);
+        etProBirthDate= (DatePicker) findViewById(stayfit.R.id.etProBirthDate);
+        rbtnProMen = (RadioButton)findViewById(stayfit.R.id.rbtnProMen);
+        rbtnProWomen =(RadioButton)findViewById(stayfit.R.id.rbtnProWomen);
+        rbtngGender= (RadioGroup) findViewById(stayfit.R.id.rbtngGender);
+        npSize = (NumberPicker) findViewById(stayfit.R.id.npSize);
+        npWeight = (NumberPicker) findViewById(stayfit.R.id.npWeight);
+        npWeightKG = (NumberPicker) findViewById(stayfit.R.id.npWeightKG);
         npWeight.setMaxValue(9);
         npWeightKG.setMaxValue(200);
         npSize.setMaxValue(210);

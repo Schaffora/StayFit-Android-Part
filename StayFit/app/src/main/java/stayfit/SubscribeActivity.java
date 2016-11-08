@@ -1,4 +1,4 @@
-package com.projects.raphaelschaffo.examplewithintents;
+package stayfit;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,14 +18,14 @@ public class SubscribeActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_subscribe);
+        setContentView(stayfit.R.layout.activity_subscribe);
 
         /* Component Initialisation */
-        btnSubscribe= (Button)findViewById(R.id.btnSubSubscribe);
-        etSubbEmailAdress=(EditText)findViewById(R.id.etSubEmailAdress);
-        etSubConfPassword=(EditText)findViewById(R.id.etSubConfPassword);
-        etSubPassword=(EditText)findViewById(R.id.etSubPassword);
-        etSubUsername=(EditText)findViewById(R.id.etSubUserName) ;
+        btnSubscribe= (Button)findViewById(stayfit.R.id.btnSubSubscribe);
+        etSubbEmailAdress=(EditText)findViewById(stayfit.R.id.etSubEmailAdress);
+        etSubConfPassword=(EditText)findViewById(stayfit.R.id.etSubConfPassword);
+        etSubPassword=(EditText)findViewById(stayfit.R.id.etSubPassword);
+        etSubUsername=(EditText)findViewById(stayfit.R.id.etSubUserName) ;
 
         /* Component Control Part */
         btnSubscribe.setOnClickListener(new View.OnClickListener() {

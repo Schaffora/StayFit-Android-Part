@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">ExampleWithIntents</string>
+    <string name="title_activity_on_going">Map</string>
 </resources>
