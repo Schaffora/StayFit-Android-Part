@@ -37,7 +37,7 @@
         android:id="@+id/chrnmtOnGoingCrono" />
 
     <TextView
-        android:text="Distance: "
+        android:text="Distance: 0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
@@ -47,7 +47,7 @@
         android:layout_toStartOf="@+id/chrnmtOnGoingCrono" />
 
     <TextView
-        android:text="Nombre de pas:"
+        android:text="Nombre de pas: 0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="22dp"
@@ -57,7 +57,7 @@
         android:layout_alignEnd="@+id/txtVOnGoingDistance" />
 
     <TextView
-        android:text="Vitesse moyenne: "
+        android:text="Vitesse moyenne: 0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/txtVOnGoingDistance"
@@ -66,7 +66,7 @@
         android:layout_toEndOf="@+id/chrnmtOnGoingCrono" />
 
     <TextView
-        android:text="Calories Brûlées:"
+        android:text="Calories Brûlées: 0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/txtVOnGoingSteps"
