@@ -9,6 +9,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
 
     /* Component Declaration */
@@ -16,6 +19,10 @@ public class MainActivity extends AppCompatActivity {
     private Button btnLogLogIn;
     private EditText etLogUserName;
     private EditText etLogPassword;
+
+    private List<User> users;
+    private List<DataSample> dataSamples;
+    private List<ActivityType> activityTypes;
 
     /* Back result Tools */
     private final int ACTIVITY_RESULT_SUBSCRIBE = 0;
@@ -27,11 +34,24 @@ public class MainActivity extends AppCompatActivity {
     private String Username ="admin";
     private String Password="1000";
 
+    public void getDataBase()
+    {
+
+    }
+
     /* Intent OnCreate*/
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(stayfit.R.layout.activity_main);
+
+
+        /* DataBase List initialisation */
+        users = new ArrayList<User>();
+        dataSamples = new ArrayList<DataSample>();
+        activityTypes = new ArrayList<ActivityType>();
+        getDataBase();
+
 
         /* Component Initialisation */
         btnLogSubscribe = (Button) findViewById(stayfit.R.id.btnLobSubscribe);
