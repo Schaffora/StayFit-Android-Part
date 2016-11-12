@@ -1,4 +1,4 @@
-package stayfit;
+package stayfit.Graphics;
 
 import android.content.Intent;
 import android.graphics.Color;

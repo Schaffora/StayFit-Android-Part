@@ -1,4 +1,4 @@
-package stayfit;
+package stayfit.Graphics;
 
 import android.Manifest;
 import android.app.Activity;
@@ -14,6 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+
+import stayfit.R;
 
 public class myPositionActivity extends Activity implements LocationListener {
     private TextView latituteField;

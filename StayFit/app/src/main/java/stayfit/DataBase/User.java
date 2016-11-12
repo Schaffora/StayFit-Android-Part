@@ -1,20 +1,19 @@
-package stayfit;
+package stayfit.DataBase;
 
-/**
- * Created by raphael.schaffo on 10.11.2016.
- */
 
-public class User {
+import java.io.Serializable;
+
+public class User implements Serializable{
 
     /*Tools use to store */
-    int ID;
-    String Pseudo;
-    String Email;
-    String MDP;
-    int Weight;
-    int Height;
-    String Birthdate;
-    String Gender;
+    public int ID;
+    public String Pseudo;
+    public String Email;
+    public String MDP;
+    public int Weight;
+    public int Height;
+    public String Birthdate;
+    public String Gender;
 
     public User(int ID, String Pseudo, String Email, String MDP, int Weight, int Height, String Birthdate, String Gender) {
         this.ID = ID;
