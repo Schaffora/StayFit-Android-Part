@@ -25,11 +25,28 @@ public class HomeActivity extends AppCompatActivity {
         btnHomeSetting=(Button)findViewById(stayfit.R.id.btnHomeSettings);
         btnHomeViewData=(Button)findViewById(stayfit.R.id.btnHomeViewData);
 
+
         btnHomeRecord.setBackgroundColor(Color.RED);
         btnHomeRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HomeActivity.this, OnGoingActivity.class);
+                startActivityForResult(intent, 0);
+            }
+        });
+
+        btnHomeViewData.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, ViewDataActivity.class);
+                startActivityForResult(intent, 0);
+            }
+        });
+
+        btnHomeSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(HomeActivity.this, EditProfileActivity.class);
                 startActivityForResult(intent, 0);
             }
         });
