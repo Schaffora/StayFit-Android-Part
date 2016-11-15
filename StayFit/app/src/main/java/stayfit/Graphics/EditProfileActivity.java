@@ -58,6 +58,8 @@ public class EditProfileActivity extends AppCompatActivity {
         npSize.setMinValue(50);
         npSize.setMaxValue(210);
 
+
+        /*DataBase tools */
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
 
@@ -76,13 +78,14 @@ public class EditProfileActivity extends AppCompatActivity {
         }
         else
         {
-            Toast.makeText( getApplicationContext(), "FATAL ERROR", Toast.LENGTH_LONG).show();
+            Toast.makeText( getApplicationContext(), "FATAL DB ACCESS ERROR", Toast.LENGTH_LONG).show();
         }
 
         final List<User> finalUsers = users;
         final List<ActivityType> finalactivities =activityTypes;
         final List<DataSample> finalDataSamples =dataSamples;
         final String finalActualUser = actualUser;
+
         btnProOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -113,11 +116,12 @@ public class EditProfileActivity extends AppCompatActivity {
                                 File outputFile = new File(context.getFilesDir(),"DATABASE.txt");
                                 OutputStream outStream = new FileOutputStream(outputFile);
                                 OutputStreamWriter outputStreamWriter= new OutputStreamWriter(outStream);
+
                                 for (User user : finalUsers) {
-                                  if(user.Pseudo.toString().equals(finalActualUser.toString()))
+                                 if(user.Pseudo.toString().equals(finalActualUser.toString()))
                                     {
-                                        Toast.makeText( getApplicationContext(), "FOUND NEW USER DATA", Toast.LENGTH_LONG).show();
-                                        outputStreamWriter.write("[user=" + user.ID + ";" + user.Pseudo + ";" + user.Email + ";" + user.MDP + ";" + Integer.toString(npWeightKG.getValue()).toString()+","+Integer.toString(npWeight.getValue()).toString() + ";" + Integer.toString(npSize.getValue()).toString() + ";" + dayvalue.toString()+"."+monthvalue.toString()+"."+yearvalue.toString() + ";" + gender.toString() + "]" + "\n");
+
+                                        outputStreamWriter.write("[user=" + user.ID + ";" + user.Pseudo + ";" + user.Email + ";" + user.MDP + ";" + Integer.toString(npWeightKG.getValue()).toString()+ ";" + Integer.toString(npSize.getValue()).toString() + ";" + dayvalue.toString()+"."+monthvalue.toString()+"."+yearvalue.toString() + ";" + gender.toString() + "]" + "\n");
                                     }
                                     else
                                     {
@@ -150,12 +154,12 @@ public class EditProfileActivity extends AppCompatActivity {
                         }
                         else
                         {
-                            Toast.makeText( getApplicationContext(), "PLEASE CHOOSE A GENDER", Toast.LENGTH_LONG).show();
+                            Toast.makeText( getApplicationContext(), "Please chose a Gender", Toast.LENGTH_LONG).show();
                         }
                     }
                 else
                     {
-                        Toast.makeText( getApplicationContext(), "COMPLET ALL FIELDS", Toast.LENGTH_LONG).show();
+                        Toast.makeText( getApplicationContext(), "Please complete all fields", Toast.LENGTH_LONG).show();
                     }
 
 

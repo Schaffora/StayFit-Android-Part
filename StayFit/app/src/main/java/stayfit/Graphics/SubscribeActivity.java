@@ -58,7 +58,7 @@ public class SubscribeActivity extends AppCompatActivity {
         }
         else
         {
-            Toast.makeText( getApplicationContext(), "FATAL ERROR", Toast.LENGTH_LONG).show();
+            Toast.makeText( getApplicationContext(), "FATAL DB ACCESS ERROR", Toast.LENGTH_LONG).show();
         }
 
 
@@ -100,8 +100,6 @@ public class SubscribeActivity extends AppCompatActivity {
                                 OutputStream outStream = new FileOutputStream(outputFile);
                                 OutputStreamWriter outputStreamWriter= new OutputStreamWriter(outStream);
 
-                                //Context context = getApplicationContext();
-                                //OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("DATABASE.txt", Context.MODE_PRIVATE));
                                 for (User user : finalUsers) {
                                     outputStreamWriter.write("[user="+user.ID +";" +user.Pseudo+";"+user.Email +";"+user.MDP+";"+user.Weight+";"+user.Height +";"+user.Birthdate +";"+user.Gender +"]"+"\n");
                                 }
@@ -132,11 +130,11 @@ public class SubscribeActivity extends AppCompatActivity {
                         {
                             if(emailDisponible == false)
                             {
-                                Toast.makeText( getApplicationContext(), "EMAIL ALRDY USED", Toast.LENGTH_LONG).show();
+                                Toast.makeText( getApplicationContext(), "Email already used", Toast.LENGTH_LONG).show();
                             }
                             if(pseudoDisponible==false)
                             {
-                                Toast.makeText( getApplicationContext(), "PSEUDO ALRDY USED", Toast.LENGTH_LONG).show();
+                                Toast.makeText( getApplicationContext(), "Pseudo already used", Toast.LENGTH_LONG).show();
                             }
 
 
@@ -144,13 +142,13 @@ public class SubscribeActivity extends AppCompatActivity {
                     }
                     else
                     {
-                        Toast.makeText( getApplicationContext(), "PASSWORD DON'T MATCH", Toast.LENGTH_LONG).show();
+                        Toast.makeText( getApplicationContext(), "Passwords don't match", Toast.LENGTH_LONG).show();
                     }
 
                 }
                 else
                 {
-                    Toast.makeText( getApplicationContext(), "COMPLETE ALL FIELDS", Toast.LENGTH_LONG).show();
+                    Toast.makeText( getApplicationContext(), "Please complete all fields", Toast.LENGTH_LONG).show();
                 }
             }
         });
