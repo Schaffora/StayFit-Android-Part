@@ -73,4 +73,13 @@
         android:layout_alignStart="@+id/txtVOnGoingSpeedAverage"
         android:id="@+id/txtVOnGoingKalories"
         android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="Nombre de pas:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="23dp"
+        android:id="@+id/txtVOnGoingSteps"
+        android:layout_above="@+id/btnOnGoingStop"
+        android:layout_alignParentStart="true" />
 </RelativeLayout>
