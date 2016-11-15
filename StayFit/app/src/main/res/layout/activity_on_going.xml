@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="stayfit.MainActivity">
+    tools:context="stayfit.Graphics.MainActivity">
 
     <fragment xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -16,7 +16,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="400dp"
         android:layout_height="250dp"
-        tools:context=".OnGoingActivity" />
+        tools:context=".Graphics.OnGoingActivity" />
 
     <Button
         android:text="Stop"
@@ -37,7 +37,7 @@
         android:id="@+id/chrnmtOnGoingCrono" />
 
     <TextView
-        android:text="Distance: "
+        android:text="Distance: 0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
@@ -47,7 +47,17 @@
         android:layout_toStartOf="@+id/chrnmtOnGoingCrono" />
 
     <TextView
-        android:text="Vitesse moyenne: "
+        android:text="Nombre de pas: 0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="22dp"
+        android:id="@+id/txtVOnGoingSteps"
+        android:layout_above="@+id/btnOnGoingStop"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/txtVOnGoingDistance" />
+
+    <TextView
+        android:text="Vitesse moyenne: 0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/txtVOnGoingDistance"
@@ -56,7 +66,7 @@
         android:layout_toEndOf="@+id/chrnmtOnGoingCrono" />
 
     <TextView
-        android:text="Calories Brûlées:"
+        android:text="Calories Brûlées: 0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/txtVOnGoingSteps"

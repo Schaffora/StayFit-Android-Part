@@ -9,6 +9,7 @@
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <uses-feature android:name="android.hardware.sensor.stepcounter" />
     <uses-feature android:name="android.hardware.sensor.stepdetector" />
@@ -19,16 +20,16 @@
         android:label="Stay Fit First Prototype"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".Graphics.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".SubscribeActivity" />
-        <activity android:name=".EditProfileActivity" />
-        <activity android:name=".HomeActivity" />
+        <activity android:name=".Graphics.SubscribeActivity" />
+        <activity android:name=".Graphics.EditProfileActivity" />
+        <activity android:name=".Graphics.HomeActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -42,12 +43,9 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".OnGoingActivity"
-            android:label="@string/title_activity_on_going"></activity><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
+            android:name=".Graphics.OnGoingActivity"
+            android:label="@string/title_activity_on_going" />
+        <activity android:name=".Graphics.ViewDataActivity"></activity>
     </application>
 
 </manifest>
