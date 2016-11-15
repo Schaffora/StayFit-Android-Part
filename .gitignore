@@ -7,4 +7,5 @@
 /build
 /captures
 .externalNativeBuild
-/StayFit/app/src/debug
+/StayFit/app/res/values/google_maps_api.xml
+
