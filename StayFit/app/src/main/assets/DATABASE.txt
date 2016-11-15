@@ -1,6 +1,7 @@
 [user=1;Schaffora;schaffora@gmail.com;12345678;80;200;03.01.94;male]
 [user=2;Gygida;gygida@gmail.com;12345678;0;185;08.01.94;male]
 [user=3;Magninla;magninla@gmail.com;12345678;75;185;26.05.94;male]
+[user=3;admin;admin@gmail.com;1000;75;185;26.05.94;male]
 [datasample=1;1;622;10.11.2016;2;1221;675;1000;46.9567/6.85678]
 [datasample=2;2;782;10.11.2016;2;789;421;1000]
 [datasample=3;2;421;10.11.2016;2;1539;1043;1000]

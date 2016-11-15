@@ -40,7 +40,8 @@
 
         <activity
             android:name=".Graphics.OnGoingActivity"
-            android:label="@string/title_activity_on_going"></activity>
+            android:label="@string/title_activity_on_going" />
+        <activity android:name=".Graphics.ViewDataActivity"></activity>
     </application>
 
 </manifest>
