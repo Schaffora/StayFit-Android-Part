@@ -10,11 +10,9 @@ import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-<<<<<<< HEAD:StayFit/app/src/main/java/stayfit/OnGoingActivity.java
+
 import android.util.Log;
-=======
 import android.view.View;
->>>>>>> 6853896dea77a4b65cfbca0e353e213d79468bfb:StayFit/app/src/main/java/stayfit/Graphics/OnGoingActivity.java
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
