@@ -7,17 +7,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.NumberPicker;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Switch;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.List;
-
 import stayfit.DataBase.ActivityType;
 import stayfit.DataBase.DataSample;
 import stayfit.DataBase.User;
@@ -78,6 +78,7 @@ public class EditProfileActivity extends AppCompatActivity {
         {
             Toast.makeText( getApplicationContext(), "FATAL ERROR", Toast.LENGTH_LONG).show();
         }
+
         final List<User> finalUsers = users;
         final List<ActivityType> finalactivities =activityTypes;
         final List<DataSample> finalDataSamples =dataSamples;
@@ -108,14 +109,12 @@ public class EditProfileActivity extends AppCompatActivity {
                                 else {
                                     gender="male";
                                 }
-
                                 Context context = getApplicationContext();
-                                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("DATABASE.txt", Context.MODE_PRIVATE));
-
-
+                                File outputFile = new File(context.getFilesDir(),"DATABASE.txt");
+                                OutputStream outStream = new FileOutputStream(outputFile);
+                                OutputStreamWriter outputStreamWriter= new OutputStreamWriter(outStream);
                                 for (User user : finalUsers) {
-                                   // outputStreamWriter.write("y");
-                                  /* if(user.Pseudo.toString().equals(finalActualUser.toString()))
+                                  if(user.Pseudo.toString().equals(finalActualUser.toString()))
                                     {
                                         Toast.makeText( getApplicationContext(), "FOUND NEW USER DATA", Toast.LENGTH_LONG).show();
                                         outputStreamWriter.write("[user=" + user.ID + ";" + user.Pseudo + ";" + user.Email + ";" + user.MDP + ";" + Integer.toString(npWeightKG.getValue()).toString()+","+Integer.toString(npWeight.getValue()).toString() + ";" + Integer.toString(npSize.getValue()).toString() + ";" + dayvalue.toString()+"."+monthvalue.toString()+"."+yearvalue.toString() + ";" + gender.toString() + "]" + "\n");
@@ -123,8 +122,8 @@ public class EditProfileActivity extends AppCompatActivity {
                                     else
                                     {
                                         outputStreamWriter.write("[user=" + user.ID + ";" + user.Pseudo + ";" + user.Email + ";" + user.MDP + ";" + user.Weight + ";" + user.Height + ";" + user.Birthdate + ";" + user.Gender + "]" + "\n");
-                                    }*/
-                                }/*
+                                    }
+                                }
                                 for (ActivityType activitis : finalactivities)
                                 {
                                     outputStreamWriter.write("[activitytype="+activitis.ID +";"+activitis.Name+";"+activitis.Coef+"]"+"\n");
@@ -137,13 +136,17 @@ public class EditProfileActivity extends AppCompatActivity {
                                         latsLongs += ";" +datasample.lats.get(i).toString()+ "/"+datasample.longs.get(i).toString();
                                     }
                                     outputStreamWriter.write("[datasample="+datasample.ID +";"+datasample.USER_ID +";"+datasample.Duration +";"+datasample.Date+";"+datasample.ACTIVITY_ID+";"+datasample.Distance+";"+datasample.Steps+";"+datasample.Calories+latsLongs +"]"+"\n");
-                                }*/
+                                }
                                 outputStreamWriter.close();
+
+
+                                setResult(RESULT_OK);
+                                finish();
                             }
                             catch (IOException e) {
+
                             }
-                            setResult(RESULT_OK);
-                            finish();
+
                         }
                         else
                         {

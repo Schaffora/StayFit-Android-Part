@@ -200,6 +200,7 @@ public class MainActivity extends AppCompatActivity {
                     Log.i("ActivityResult", "Result_OK");
                     Toast.makeText(this, "USER CONNECTION SUCCESS", Toast.LENGTH_LONG).show();
                     DataBaseRefresh();
+
                     if(etLogPassword.getText().toString().equals(ActualUserMDP) && etLogUserName.getText().toString().equals(ActualUser))
                     {
                         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
@@ -252,6 +253,7 @@ public class MainActivity extends AppCompatActivity {
                 if(DATABASE.get(i)!=null)
                 {
                     DataBaseInterpret(DATABASE.get(i));
+                    Toast.makeText(this, DATABASE.get(i), Toast.LENGTH_LONG).show();
                 }
             }
         } catch (FileNotFoundException e) {

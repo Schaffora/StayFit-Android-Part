@@ -2,6 +2,7 @@ package stayfit.Graphics;
 
 import android.content.Context;
 import android.content.Intent;
+import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,8 +10,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.util.List;
 
 import stayfit.DataBase.ActivityType;
@@ -87,9 +92,16 @@ public class SubscribeActivity extends AppCompatActivity {
 
                         if(emailDisponible == true && pseudoDisponible==true)
                         {
+
                             try {
                                 Context context = getApplicationContext();
-                                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("DATABASE.txt", Context.MODE_PRIVATE));
+                                File outputFile = new File(context.getFilesDir(),"DATABASE.txt");
+
+                                OutputStream outStream = new FileOutputStream(outputFile);
+                                OutputStreamWriter outputStreamWriter= new OutputStreamWriter(outStream);
+
+                                //Context context = getApplicationContext();
+                                //OutputStreamWriter outputStreamWriter = new OutputStreamWriter(context.openFileOutput("DATABASE.txt", Context.MODE_PRIVATE));
                                 for (User user : finalUsers) {
                                     outputStreamWriter.write("[user="+user.ID +";" +user.Pseudo+";"+user.Email +";"+user.MDP+";"+user.Weight+";"+user.Height +";"+user.Birthdate +";"+user.Gender +"]"+"\n");
                                 }
@@ -109,11 +121,12 @@ public class SubscribeActivity extends AppCompatActivity {
                                     outputStreamWriter.write("[datasample="+datasample.ID +";"+datasample.USER_ID +";"+datasample.Duration +";"+datasample.Date+";"+datasample.ACTIVITY_ID+";"+datasample.Distance+";"+datasample.Steps+";"+datasample.Calories+latsLongs +"]"+"\n");
                                 }
                                 outputStreamWriter.close();
+                                setResult(RESULT_OK);
+                                finish();
                             }
                             catch (IOException e) {
                             }
-                            setResult(RESULT_OK);
-                            finish();
+
                         }
                         else
                         {
