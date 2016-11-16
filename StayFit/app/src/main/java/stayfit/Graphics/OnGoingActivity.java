@@ -1,41 +1,40 @@
 package stayfit.Graphics;
 
+import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.net.Uri;
-import android.os.Build;
-import android.support.v4.app.FragmentActivity;
+import android.location.Location;
 import android.os.Bundle;
-
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
 
-import com.google.android.gms.appdatasearch.Feature;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AndroidAppUri;
 import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.appindexing.Thing;
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.drive.Contents;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 import stayfit.R;
 
-public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallback,SensorEventListener {
+public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallback, SensorEventListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
+
 
     private GoogleMap mMap;
     private TextView txtVOnGoingKalories;
@@ -57,13 +56,17 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
     private int footsteps;
     private TextView txtSteps;
 
+    private int REQUEST_ACCESS = 1;
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
+
     /* Intent OnCreate Method*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_on_going);
 
-        Log.d("INFO","asdfasdf");
+        Log.d("INFO", "asdfasdf");
 
 
          /* Component Initialisation*/
@@ -87,10 +90,11 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
         chrnmtOnGoingCrono.start();
 
         /*Obtain the SupportMapFragment and get notified when the map is ready to be used.*/
-//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-//                .findFragmentById(R.id.map);
-//        mapFragment.getMapAsync(this);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
 
+        Log.d("TEST", "TESTTESTTEST");
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -98,21 +102,31 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
 
 
         //pedometer
-        sensorManager=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
-        sensor=sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
-        footsteps=0;
+        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+        footsteps = 0;
 
-        txtSteps= (TextView)findViewById(R.id.txtVOnGoingSteps);
+        txtSteps = (TextView) findViewById(R.id.txtVOnGoingSteps);
+        Log.d("INFO", "endCreate");
 
+        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        // Create an instance of GoogleAPIClient.
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .build();
+        }
     }
 
     @Override
-    public final void onSensorChanged(SensorEvent event)
-    {
+    public final void onSensorChanged(SensorEvent event) {
         footsteps++;
-        txtSteps.setText(footsteps+"");
+        txtSteps.setText(footsteps + "");
 
-        Log.i("STEP!!",footsteps+"");
+        Log.i("STEP!!", footsteps + "");
     }
 
     @Override
@@ -121,14 +135,13 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
     }
 
     @Override
-    protected void onResume()
-    {
+    protected void onResume() {
         super.onResume();
-        sensorManager.registerListener(this,sensor,SensorManager.SENSOR_DELAY_NORMAL);
+        sensorManager.registerListener(this, sensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
         sensorManager.unregisterListener(this);
     }
@@ -147,7 +160,7 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-33.866, 151.195);
+        /*LatLng sydney = new LatLng(-33.866, 151.195);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Your Positon").snippet("Actual Position"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 14));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
@@ -156,8 +169,42 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
                 .add(new LatLng(-33.864, 151.193))
                 .add(new LatLng(-33.866, 151.198))
                 .add(new LatLng(-33.867, 151.203))
-        );
+        );*/
+
+        if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+            Log.i("PERMISSION", "permission accordée");
+        } else {
+            // Show rationale and request permission.
+            Log.i("PERMISSION", "permission refusée");
+            //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_LOCATION_REQUEST_CODE);
+        }
     }
 
 
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_ACCESS);
+            return;
+        }
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+        LatLng latlng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+        mMap.addMarker(new MarkerOptions().position(latlng).title("Positon").snippet("Position"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 18));
+    }
+
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Log.i("Connection failed", connectionResult.getErrorMessage());
+    }
+    @Override
+    public void onConnectionSuspended(int i) {
+        Log.i("Connection suspended", String.valueOf(i));
+    }
 }

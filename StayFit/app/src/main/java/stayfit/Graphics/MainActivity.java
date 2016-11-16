@@ -46,11 +46,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void getDataBase() {
         DATABASE = new ArrayList<String>();
-        //AssetManager am = getAssets(); //<-----------------KEEP THIS LINE ALIVE
+        AssetManager am = getAssets(); //<-----------------KEEP THIS LINE ALIVE
         Context context = getApplicationContext();
         try {
-            InputStream is = context.openFileInput("DATABASE.txt");
-            //InputStream is = am.open("DATABASE.txt"); //<-----------------KEEP THIS LINE ALIVE
+            //InputStream is = context.openFileInput("DATABASE.txt");
+            InputStream is = am.open("DATABASE.txt"); //<-----------------KEEP THIS LINE ALIVE
             Toast.makeText(this, "DATABASE ACCESS FOUND", Toast.LENGTH_LONG).show();
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             String line = reader.readLine();
