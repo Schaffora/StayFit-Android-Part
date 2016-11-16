@@ -46,11 +46,11 @@ public class MainActivity extends AppCompatActivity {
 
     public void getDataBase() {
         DATABASE = new ArrayList<String>();
-        AssetManager am = getAssets(); //<-----------------KEEP THIS LINE ALIVE
+        //AssetManager am = getAssets(); //<-----------------KEEP THIS LINE ALIVE
         Context context = getApplicationContext();
         try {
-            //InputStream is = context.openFileInput("DATABASE.txt");
-            InputStream is = am.open("DATABASE.txt"); //<-----------------KEEP THIS LINE ALIVE
+            InputStream is = context.openFileInput("DATABASE.txt");
+            //InputStream is = am.open("DATABASE.txt"); //<-----------------KEEP THIS LINE ALIVE
             Toast.makeText(this, "DATABASE ACCESS FOUND", Toast.LENGTH_LONG).show();
             BufferedReader reader = new BufferedReader(new InputStreamReader(is));
             String line = reader.readLine();
@@ -72,14 +72,19 @@ public class MainActivity extends AppCompatActivity {
     {
         if(line!=null)
         {
+
+
+
             String datas=line.substring(1,line.length()-1);
             List <String> dataTypes = Arrays.asList(datas.split("\\s*=\\s*"));
             List<String> values =Arrays.asList(dataTypes.get(1).split("\\s*;\\s*"));
+
             if(dataTypes.get(0).equals("user"))
             {
                 users.add(new User(Integer.parseInt(values.get(0)),values.get(1),values.get(2),values.get(3),Integer.parseInt(values.get(4)),Integer.parseInt(values.get(5)),values.get(6),values.get(7)));
             }
-            else if(dataTypes.get(0).equals("datasample"))
+
+            if(dataTypes.get(0).equals("datasample"))
             {
                 List<String> lats = new ArrayList<String>();
                 List<String> longs = new ArrayList<String>();
@@ -101,6 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 activityTypes.add(new ActivityType(Integer.parseInt(values.get(0)), values.get(1),Double.parseDouble(values.get(2))));
             }
             else{}
+
         }
 
 
@@ -191,19 +197,21 @@ public class MainActivity extends AppCompatActivity {
             case 0:
                 if (resultCode == RESULT_OK) {
                     Log.i("ActivityResult", "Result_OK");
-                    Toast.makeText(this, "USER CREATION SUCCESS", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "New user was created. ", Toast.LENGTH_LONG).show();
                     DataBaseRefresh();
                 }
                 break;
             case 1000:
                 if (resultCode == RESULT_OK) {
                     Log.i("ActivityResult", "Result_OK");
-                    Toast.makeText(this, "USER CONNECTION SUCCESS", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Have fun with StayFit !", Toast.LENGTH_LONG).show();
                     DataBaseRefresh();
 
                     if(etLogPassword.getText().toString().equals(ActualUserMDP) && etLogUserName.getText().toString().equals(ActualUser))
                     {
                         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                        passDataBaseBundle(intent,users,dataSamples,activityTypes);
+                        intent.putExtra("actualUser", ActualUser);
                         startActivityForResult(intent, ACTIVITY_RESULT_HOME);
 
                     }
@@ -217,6 +225,7 @@ public class MainActivity extends AppCompatActivity {
     {
         Context context = getApplicationContext();
         try {
+
             InputStream inputStream = context.openFileInput("DATABASE.txt");
             users.clear();
             dataSamples.clear();
@@ -232,7 +241,6 @@ public class MainActivity extends AppCompatActivity {
             }
             DATABASE.add(line);
 
-
             while (line !=null)
             {
                 try {
@@ -242,18 +250,16 @@ public class MainActivity extends AppCompatActivity {
                 }
                 DATABASE.add(line);
             }
-
             try {
                 inputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
             for(int i=0; i<DATABASE.size();i++)
             {
-                if(DATABASE.get(i)!=null)
-                {
-                    DataBaseInterpret(DATABASE.get(i));
-                    Toast.makeText(this, DATABASE.get(i), Toast.LENGTH_LONG).show();
+                if (DATABASE.get(i) != null) {
+                        DataBaseInterpret(DATABASE.get(i));
                 }
             }
         } catch (FileNotFoundException e) {
