@@ -1,5 +1,6 @@
 package stayfit.Graphics;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
@@ -86,11 +87,10 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
         chrnmtOnGoingCrono.start();
 
         /*Obtain the SupportMapFragment and get notified when the map is ready to be used.*/
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+//        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+//                .findFragmentById(R.id.map);
+//        mapFragment.getMapAsync(this);
 
-        Log.d("TEST","TESTTESTTEST");
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -98,12 +98,11 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
 
 
         //pedometer
-        sensorManager=(SensorManager)getSystemService(SENSOR_SERVICE);
-        sensor=sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
+        sensorManager=(SensorManager)getSystemService(Context.SENSOR_SERVICE);
+        sensor=sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
         footsteps=0;
 
         txtSteps= (TextView)findViewById(R.id.txtVOnGoingSteps);
-        Log.d("INFO","endCreate");
 
     }
 
@@ -111,9 +110,9 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
     public final void onSensorChanged(SensorEvent event)
     {
         footsteps++;
-        txtSteps.setText(footsteps);
+        txtSteps.setText(footsteps+"");
 
-        Log.i("STEP!!",footsteps+" and "+event.values[0]);
+        Log.i("STEP!!",footsteps+"");
     }
 
     @Override
