@@ -50,7 +50,7 @@ public class EditProfileActivity extends AppCompatActivity {
         npWeight = (NumberPicker) findViewById(stayfit.R.id.npWeight);
         npWeightKG = (NumberPicker) findViewById(stayfit.R.id.npWeightKG);
 
-
+        /* Value initilisation */
         npWeight.setMinValue(0);
         npWeight.setMaxValue(9);
         npWeightKG.setMinValue(20);
@@ -74,7 +74,6 @@ public class EditProfileActivity extends AppCompatActivity {
             dataSamples = (List<DataSample>)extras.getSerializable("dataSamples");
             activityTypes= (List<ActivityType>)extras.getSerializable("activityTypes");
             actualUser= intent.getStringExtra("actualUser");
-            Toast.makeText( getApplicationContext(), "Welcome "+actualUser, Toast.LENGTH_LONG).show();
         }
         else
         {

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_main"
     android:layout_width="match_parent"
@@ -9,47 +10,6 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="stayfit.Graphics.MainActivity">
-
-    <TextView
-        android:text="Connection"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/textView2"
-        android:textSize="32sp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="37dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:ems="10"
-        android:layout_centerVertical="true"
-        android:layout_alignEnd="@+id/etLogUsername"
-        android:id="@+id/etLogPassword"
-        android:hint="Password"
-        android:text="1000" />
-
-    <Button
-        android:text="Log In"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/etLogPassword"
-        android:layout_marginTop="28dp"
-        android:id="@+id/btnLogLogIn"
-        android:layout_alignStart="@+id/etLogPassword"
-        android:layout_alignEnd="@+id/etLogPassword" />
-
-    <Button
-        android:text="Subscribe"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/btnLogLogIn"
-        android:layout_marginTop="15dp"
-        android:id="@+id/btnLobSubscribe"
-        android:layout_alignStart="@+id/btnLogLogIn"
-        android:layout_alignEnd="@+id/btnLogLogIn" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -62,5 +22,46 @@
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="25dp"
         android:text="admin" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/stayfit"
+        android:id="@+id/imageView2"
+        android:layout_above="@+id/etLogUsername"
+        android:layout_alignParentStart="true" />
+
+    <Button
+        android:text="Subscribe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnLobSubscribe"
+        android:layout_alignParentBottom="true"
+        android:layout_alignStart="@+id/btnLogLogIn"
+        android:layout_marginBottom="54dp"
+        android:layout_alignEnd="@+id/btnLogLogIn" />
+
+    <Button
+        android:text="Log In"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnLogLogIn"
+        android:layout_above="@+id/btnLobSubscribe"
+        android:layout_alignStart="@+id/etLogPassword"
+        android:layout_marginBottom="27dp"
+        android:layout_alignEnd="@+id/etLogPassword" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/etLogPassword"
+        android:hint="Password"
+        android:text="1000"
+        android:layout_above="@+id/btnLogLogIn"
+        android:layout_alignStart="@+id/etLogUsername"
+        android:layout_marginBottom="18dp" />
+
 
 </RelativeLayout>

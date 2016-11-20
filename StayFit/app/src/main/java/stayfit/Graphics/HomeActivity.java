@@ -42,7 +42,6 @@ public class HomeActivity extends AppCompatActivity {
             dataSamples = (List<DataSample>)extras.getSerializable("dataSamples");
             activityTypes= (List<ActivityType>)extras.getSerializable("activityTypes");
             actualUser= intent.getStringExtra("actualUser");
-            Toast.makeText( getApplicationContext(), "Welcome "+actualUser, Toast.LENGTH_LONG).show();
         }
         else
         {
@@ -60,11 +59,14 @@ public class HomeActivity extends AppCompatActivity {
         btnHomeViewData=(Button)findViewById(stayfit.R.id.btnHomeViewData);
 
         /* Gestion des cliques sur les bouttons */
-        btnHomeRecord.setBackgroundColor(Color.RED);
+        btnHomeRecord.setBackgroundColor(Color.BLUE);
+
         btnHomeRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HomeActivity.this, OnGoingActivity.class);
+                passDataBaseBundle(intent, finalUsers, finalDataSamples, finalActivityTypes);
+                intent.putExtra("actualUser", finalActualUser);
                 startActivityForResult(intent, 0);
             }
         });
@@ -85,6 +87,8 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HomeActivity.this, EditProfileActivity.class);
+                passDataBaseBundle(intent, finalUsers, finalDataSamples, finalActivityTypes);
+                intent.putExtra("actualUser", finalActualUser);
                 startActivityForResult(intent, 0);
             }
         });

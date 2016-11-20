@@ -68,12 +68,11 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "DATABASE ACCESS NOT FOUND", Toast.LENGTH_LONG).show();
         }
     }
+
     public void DataBaseInterpret(String line)
     {
         if(line!=null)
         {
-
-
 
             String datas=line.substring(1,line.length()-1);
             List <String> dataTypes = Arrays.asList(datas.split("\\s*=\\s*"));
