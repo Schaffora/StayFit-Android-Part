@@ -1,7 +1,6 @@
 package stayfit.Graphics;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -19,12 +18,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,13 +29,12 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
 
 import stayfit.R;
 
-public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallback, SensorEventListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks, LocationListener{
+public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallback, SensorEventListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
 
-    /* Component declaration */
+
     private GoogleMap mMap;
     private TextView txtVOnGoingKalories;
     private TextView txtVOnGoingSpeedAverage;
@@ -46,21 +42,23 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
     private TextView txtVOnGoingSteps;
     private Button btnOnGoingStop;
     private Chronometer chrnmtOnGoingCrono;
+
+    /**
+     * ATTENTION: This was auto-generated to implement the App Indexing API.
+     * See https://g.co/AppIndexing/AndroidStudio for more information.
+     */
     private GoogleApiClient client;
-    private TextView txtSteps;
 
-    /* Sensors declaration */
+    //pedometer
     private SensorManager sensorManager;
-    private Sensor sensor;
-    private Location mLastLocation;
-
-    /* Tools declration */
-    private int REQUEST_ACCESS = 1;
-    private GoogleApiClient mGoogleApiClient;
+    private Sensor sensor; //???
     private int footsteps;
 
+    private int REQUEST_ACCESS = 1;
+    private GoogleApiClient mGoogleApiClient;
+    private Location mLastLocation;
 
-    /* On create Activity Method */
+    /* Intent OnCreate Method*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,7 +71,6 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
         txtVOnGoingKalories = (TextView) findViewById(R.id.txtVOnGoingKalories);
         txtVOnGoingSpeedAverage = (TextView) findViewById(R.id.txtVOnGoingSpeedAverage);
         txtVOnGoingSteps = (TextView) findViewById(R.id.txtVOnGoingSteps);
-        txtSteps = (TextView) findViewById(R.id.txtVOnGoingSteps);
 
         /* Stop Chronometer */
         btnOnGoingStop.setOnClickListener(new View.OnClickListener() {
@@ -87,18 +84,24 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
          /* Chronometer Start*/
         chrnmtOnGoingCrono.start();
 
-        /* Map initilisation */
+        /*Obtain the SupportMapFragment and get notified when the map is ready to be used.*/
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        /* Sensor managing */
+        // ATTENTION: This was auto-generated to implement the App Indexing API.
+        // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
-        sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
+
+
+        //pedometer
+        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
+        sensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
         footsteps = 0;
 
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+        // Create an instance of GoogleAPIClient.
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -109,22 +112,25 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
     }
 
     @Override
-    public void onLocationChanged(Location location) {
-        mLastLocation= location;
-        LatLng latlng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(latlng).title("Positon").snippet("Position"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 18));
-    }
-    @Override
     public final void onSensorChanged(SensorEvent event) {
         footsteps++;
-        txtSteps.setText(footsteps + "");
-
-        Log.i("STEP!!", footsteps + "");
+        txtVOnGoingSteps.setText("Pas : " + footsteps);
+        //Log.i("STEP!!", footsteps + " and " + event.values[0]);
     }
+
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
     }
 
     @Override
@@ -139,15 +145,20 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
         sensorManager.unregisterListener(this);
     }
 
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        /*LatLng latlng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-        mMap.addMarker(new MarkerOptions().position(latlng).title("Positon").snippet("Position"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 18));*/
-        //Add a marker in Sydney and move the camera
+        // Add a marker in Sydney and move the camera
         /*LatLng sydney = new LatLng(-33.866, 151.195);
         mMap.addMarker(new MarkerOptions().position(sydney).title("Your Positon").snippet("Actual Position"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 14));
@@ -162,11 +173,10 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
-            Log.i("PERMISSION", "permission accordée");
+            Log.i("PERMISSION", "permission granted");
         } else {
             // Show rationale and request permission.
-            Log.i("PERMISSION", "permission refusée");
-            //ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, MY_LOCATION_REQUEST_CODE);
+            Log.i("PERMISSION", "permission denied");
         }
     }
 
@@ -174,21 +184,19 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
     @Override
     public void onConnected(@Nullable Bundle bundle) {
 
+
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_ACCESS);
-            //startLocationUpdates();
             return;
         }
-        //mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        /*LatLng latlng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-        Toast.makeText( getApplicationContext(), latlng.toString(), Toast.LENGTH_LONG).show();*/
-
-
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLastLocation != null) {
+            LatLng latlng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(latlng).title("Your Positon").snippet("Actual Position"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 18));
+        }
     }
-    /*protected void startLocationUpdates() {
-        LocationServices.FusedLocationApi.requestLocationUpdates(
-                mGoogleApiClient, mLocationRequest, this);
-    }*/
 
 
     @Override
