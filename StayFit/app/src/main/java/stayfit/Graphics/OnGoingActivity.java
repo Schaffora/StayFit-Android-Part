@@ -26,12 +26,9 @@ import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,30 +38,31 @@ import stayfit.R;
 public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallback, SensorEventListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,LocationListener {
 
 
-    private GoogleMap mMap;
+    /* Components*/
     private TextView txtVOnGoingKalories;
     private TextView txtVOnGoingSpeedAverage;
     private TextView txtVOnGoingDistance;
     private TextView txtVOnGoingSteps;
     private Button btnOnGoingStop;
     private Chronometer chrnmtOnGoingCrono;
-    private List<Double> latsLongs;
 
-    /**
-     * ATTENTION: This was auto-generated to implement the App Indexing API.
-     * See https://g.co/AppIndexing/AndroidStudio for more information.
-     */
-    private GoogleApiClient client;
 
-    //pedometer
-    private SensorManager sensorManager;
-    private Sensor sensor; //???
-    private int footsteps;
+    /* Map Tools*/
+    private List<Double> mapLatsLongsList;
+    private GoogleMap mapMap;
 
+    /* Location Tools */
     private int REQUEST_ACCESS = 1;
-    private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
-    LocationRequest mLocationRequest;
+    private LocationRequest mLocationRequest;
+
+
+    /* Sensor */
+    private SensorManager sensorManager;
+    private Sensor sensor;
+    private int footsteps;
+    private GoogleApiClient mGoogleApiClient;
+
 
     /* Intent OnCreate Method*/
     @Override
@@ -72,7 +70,9 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_on_going);
 
-        this.latsLongs = new ArrayList<Double>();
+        /* List of Latitudes and Longitudes Initialisation */
+        this.mapLatsLongsList = new ArrayList<Double>();
+
          /* Component Initialisation*/
         btnOnGoingStop = (Button) findViewById(R.id.btnOnGoingStop);
         chrnmtOnGoingCrono = (Chronometer) findViewById(R.id.chrnmtOnGoingCrono);
@@ -93,24 +93,22 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
          /* Chronometer Start*/
         chrnmtOnGoingCrono.start();
 
-        /*Obtain the SupportMapFragment and get notified when the map is ready to be used.*/
+        /* Obtain the SupportMapFragment and get notified when the map is ready to be used. */
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        // ATTENTION: This was auto-generated to implement the App Indexing API.
-        // See https://g.co/AppIndexing/AndroidStudio for more information.
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
 
-        //pedometer
+
+        /* Podometer Initialisation */
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
         footsteps = 0;
         txtVOnGoingSteps.setText("Pas : "+footsteps);
-        //client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
-        // Create an instance of GoogleAPIClient.
+
+        /* Create an instance of GoogleAPIClient.*/
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -119,10 +117,11 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
                     .build();
 
         }
+
+
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(5000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-
         mLocationRequest.setFastestInterval(5000);
     }
 
@@ -130,22 +129,26 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
     public final void onSensorChanged(SensorEvent event) {
         footsteps++;
         txtVOnGoingSteps.setText("Pas : " + footsteps);
-        //Log.i("STEP!!", footsteps + " and " + event.values[0]);
     }
 
     @Override
     public void onLocationChanged(Location location) {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_ACCESS);
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, REQUEST_ACCESS);
             return;
         }
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        double latitude = location.getLatitude();
+        double longitude = location.getLongitude();
+        Toast.makeText( getApplicationContext(), "youyou", Toast.LENGTH_LONG).show();
+
+        /*mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
+            Toast.makeText( getApplicationContext(),  Double.toString(mLastLocation.getLatitude())+":"+Double.toString(mLastLocation.getLongitude()), Toast.LENGTH_LONG).show();
             LatLng latlng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-            mMap.addMarker(new MarkerOptions().position(latlng).title("Your Positon").snippet("Actual Position"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 18));
-        }
+            mapMap.addMarker(new MarkerOptions().position(latlng).title("Your Positon").snippet("Actual Position"));
+            mapMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+            mapMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 18));
+        }*/
     }
 
     protected void onStart() {
@@ -176,37 +179,15 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
         sensorManager.unregisterListener(this);
     }
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-        // Add a marker in Sydney and move the camera
-        /*LatLng sydney = new LatLng(-33.866, 151.195);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Your Positon").snippet("Actual Position"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 14));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        mMap.addPolyline(new PolylineOptions().geodesic(true)
-                .add(new LatLng(-33.866, 151.195))
-                .add(new LatLng(-33.864, 151.193))
-                .add(new LatLng(-33.866, 151.198))
-                .add(new LatLng(-33.867, 151.203))
-        );*/
-
+        mapMap = googleMap;
         if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
+            mapMap.setMyLocationEnabled(true);
             Log.i("PERMISSION", "permission granted");
         } else {
-            // Show rationale and request permission.
+             /* Show rationale and request permission.*/
             Log.i("PERMISSION", "permission denied");
         }
     }
@@ -215,20 +196,9 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
     @Override
     public void onConnected(@Nullable Bundle bundle) {
 
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_ACCESS);
             return;
-        }
-        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-        if (mLastLocation != null) {
-            LatLng latlng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-            latsLongs.add(mLastLocation.getLatitude());
-            latsLongs.add(mLastLocation.getLongitude());
-            Toast.makeText( getApplicationContext(),  Double.toString(mLastLocation.getLatitude())+":"+Double.toString(mLastLocation.getLongitude()), Toast.LENGTH_LONG).show();
-            mMap.addMarker(new MarkerOptions().position(latlng).title("Your Positon").snippet("Actual Position"));
-            mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 18));
         }
     }
 
