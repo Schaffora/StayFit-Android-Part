@@ -22,6 +22,8 @@ import android.widget.TextView;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -32,7 +34,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import stayfit.R;
 
-public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallback, SensorEventListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks {
+public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallback, SensorEventListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,LocationListener {
 
 
     private GoogleMap mMap;
@@ -57,6 +59,7 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
     private int REQUEST_ACCESS = 1;
     private GoogleApiClient mGoogleApiClient;
     private Location mLastLocation;
+    LocationRequest mLocationRequest;
 
     /* Intent OnCreate Method*/
     @Override
@@ -98,8 +101,8 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
         footsteps = 0;
-
-        client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        txtVOnGoingSteps.setText("Pas : "+footsteps);
+        //client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
 
         // Create an instance of GoogleAPIClient.
         if (mGoogleApiClient == null) {
@@ -108,7 +111,13 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
                     .build();
+
         }
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(5000);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
+        mLocationRequest.setFastestInterval(5000);
     }
 
     @Override
@@ -118,8 +127,24 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
         //Log.i("STEP!!", footsteps + " and " + event.values[0]);
     }
 
+    @Override
+    public void onLocationChanged(Location location) {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_ACCESS);
+            return;
+        }
+        mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if (mLastLocation != null) {
+            LatLng latlng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+            mMap.addMarker(new MarkerOptions().position(latlng).title("Your Positon").snippet("Actual Position"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 18));
+        }
+    }
+
     protected void onStart() {
         mGoogleApiClient.connect();
+
         super.onStart();
     }
 
