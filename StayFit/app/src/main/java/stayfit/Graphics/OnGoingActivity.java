@@ -18,6 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Chronometer;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.ConnectionResult;
@@ -32,6 +33,9 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import stayfit.R;
 
 public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallback, SensorEventListener, GoogleApiClient.OnConnectionFailedListener, GoogleApiClient.ConnectionCallbacks,LocationListener {
@@ -44,6 +48,7 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
     private TextView txtVOnGoingSteps;
     private Button btnOnGoingStop;
     private Chronometer chrnmtOnGoingCrono;
+    private List<Double> latsLongs;
 
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
@@ -67,6 +72,7 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_on_going);
 
+        this.latsLongs = new ArrayList<Double>();
          /* Component Initialisation*/
         btnOnGoingStop = (Button) findViewById(R.id.btnOnGoingStop);
         chrnmtOnGoingCrono = (Chronometer) findViewById(R.id.chrnmtOnGoingCrono);
@@ -217,6 +223,9 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
         mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
             LatLng latlng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+            latsLongs.add(mLastLocation.getLatitude());
+            latsLongs.add(mLastLocation.getLongitude());
+            Toast.makeText( getApplicationContext(),  Double.toString(mLastLocation.getLatitude())+":"+Double.toString(mLastLocation.getLongitude()), Toast.LENGTH_LONG).show();
             mMap.addMarker(new MarkerOptions().position(latlng).title("Your Positon").snippet("Actual Position"));
             mMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 18));
