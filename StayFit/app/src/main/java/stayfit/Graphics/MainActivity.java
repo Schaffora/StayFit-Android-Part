@@ -22,7 +22,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import stayfit.DataBase.ActivityType;
+
 import stayfit.DataBase.DataSample;
 import stayfit.DataBase.User;
 
@@ -36,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
 
     private List<User> users;
     private List<DataSample> dataSamples;
-    private List<ActivityType> activityTypes;
     private List<String> DATABASE;
 
     /* Back result Tools */
@@ -103,10 +102,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 dataSamples.add(new DataSample(Integer.parseInt(values.get(0)),Integer.parseInt(values.get(1)),Integer.parseInt(values.get(2)),values.get(3),Integer.parseInt(values.get(4)),Integer.parseInt(values.get(5)),Integer.parseInt(values.get(6)),Integer.parseInt(values.get(7)),lats,longs));
             }
-            else if(dataTypes.get(0).equals("activitytype"))
-            {
-                activityTypes.add(new ActivityType(Integer.parseInt(values.get(0)), values.get(1),Double.parseDouble(values.get(2))));
-            }
             else{}
 
         }
@@ -124,7 +119,6 @@ public class MainActivity extends AppCompatActivity {
         /* DataBase List initialisation */
         users = new ArrayList<User>();
         dataSamples = new ArrayList<DataSample>();
-        activityTypes = new ArrayList<ActivityType>();
         getDataBase();
 
 
@@ -140,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SubscribeActivity.class);
-                passDataBaseBundle(intent,users,dataSamples,activityTypes);
+                passDataBaseBundle(intent,users,dataSamples);
                 startActivityForResult(intent, ACTIVITY_RESULT_SUBSCRIBE);
             }
         });
@@ -158,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                         if(users.get(i).Weight !=0)
                         {
                             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                            passDataBaseBundle(intent,users,dataSamples,activityTypes);
+                            passDataBaseBundle(intent,users,dataSamples);
                             startActivityForResult(intent, ACTIVITY_RESULT_HOME);
 
 
@@ -166,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
                         else
                         {
                             Intent intent = new Intent(MainActivity.this, EditProfileActivity.class);
-                            passDataBaseBundle(intent,users,dataSamples,activityTypes);
+                            passDataBaseBundle(intent,users,dataSamples);
                             intent.putExtra("actualUser", ActualUser);
                             startActivityForResult(intent, ACTIVITY_RESULT_EDIT_PROFILE);
                         }
@@ -185,11 +179,10 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void passDataBaseBundle(Intent intent, List<User> users, List<DataSample> dataSamples,List<ActivityType> activityTypes) {
+    private void passDataBaseBundle(Intent intent, List<User> users, List<DataSample> dataSamples) {
         Bundle bundle = new Bundle();
         bundle.putSerializable("users",(Serializable)users);
         bundle.putSerializable("dataSamples",(Serializable)dataSamples);
-        bundle.putSerializable("activityTypes",(Serializable)activityTypes);
         intent.putExtras(bundle);
     }
 
@@ -216,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
                     if(etLogPassword.getText().toString().equals(ActualUserMDP) && etLogUserName.getText().toString().equals(ActualUser))
                     {
                         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                        passDataBaseBundle(intent,users,dataSamples,activityTypes);
+                        passDataBaseBundle(intent,users,dataSamples);
                         intent.putExtra("actualUser", ActualUser);
                         startActivityForResult(intent, ACTIVITY_RESULT_HOME);
 
@@ -235,7 +228,6 @@ public class MainActivity extends AppCompatActivity {
             InputStream inputStream = context.openFileInput("DATABASE.txt");
             users.clear();
             dataSamples.clear();
-            activityTypes.clear();
             DATABASE.clear();
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));

@@ -18,7 +18,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.util.List;
-import stayfit.DataBase.ActivityType;
+
 import stayfit.DataBase.DataSample;
 import stayfit.DataBase.User;
 
@@ -65,14 +65,12 @@ public class EditProfileActivity extends AppCompatActivity {
 
         List<User> users = null;
         List<DataSample> dataSamples = null ;
-        List<ActivityType>activityTypes = null;
         String actualUser ="";
 
 
         if (extras != null) {
             users = (List<User>)extras.getSerializable("users");
             dataSamples = (List<DataSample>)extras.getSerializable("dataSamples");
-            activityTypes= (List<ActivityType>)extras.getSerializable("activityTypes");
             actualUser= intent.getStringExtra("actualUser");
         }
         else
@@ -81,9 +79,32 @@ public class EditProfileActivity extends AppCompatActivity {
         }
 
         final List<User> finalUsers = users;
-        final List<ActivityType> finalactivities =activityTypes;
         final List<DataSample> finalDataSamples =dataSamples;
         final String finalActualUser = actualUser;
+
+        /*for (User user : finalUsers) {
+            if(user.Pseudo.toString().equals(finalActualUser.toString()))
+            {
+
+               if(user.Weight!=0)
+               {
+                    npWeight.setValue(user.Weight);
+                    npSize.setValue(user.Height);
+                    if(user.Gender.equals("male"))
+                    {
+                        rbtnProMen.setChecked(true);
+                        rbtnProWomen.setChecked(false);
+                    }
+                    else
+                    {
+                        rbtnProMen.setChecked(false);
+                        rbtnProWomen.setChecked(true);
+                    }
+                   String value[]=user.Birthdate.split(".");
+                   etProBirthDate.updateDate(Integer.parseInt(value[2]),Integer.parseInt(value[1]),Integer.parseInt(value[0]));
+               }
+            }
+        }*/
 
         btnProOk.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -127,10 +148,7 @@ public class EditProfileActivity extends AppCompatActivity {
                                         outputStreamWriter.write("[user=" + user.ID + ";" + user.Pseudo + ";" + user.Email + ";" + user.MDP + ";" + user.Weight + ";" + user.Height + ";" + user.Birthdate + ";" + user.Gender + "]" + "\n");
                                     }
                                 }
-                                for (ActivityType activitis : finalactivities)
-                                {
-                                    outputStreamWriter.write("[activitytype="+activitis.ID +";"+activitis.Name+";"+activitis.Coef+"]"+"\n");
-                                }
+
                                 for(DataSample datasample :finalDataSamples)
                                 {
                                     String latsLongs="";
