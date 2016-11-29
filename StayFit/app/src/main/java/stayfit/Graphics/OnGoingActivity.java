@@ -20,15 +20,16 @@ import android.widget.Chronometer;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -115,9 +116,7 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
                     .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
                     .build();
-
         }
-
 
         mLocationRequest = new LocationRequest();
         mLocationRequest.setInterval(5000);
@@ -139,7 +138,10 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
         }
         double latitude = location.getLatitude();
         double longitude = location.getLongitude();
-        Toast.makeText( getApplicationContext(), "youyou", Toast.LENGTH_LONG).show();
+        Toast.makeText( getApplicationContext(),  Double.toString(location.getLatitude())+":"+Double.toString(location.getLongitude()), Toast.LENGTH_LONG).show();
+        LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
+        mapMap.moveCamera(CameraUpdateFactory.newLatLng(latlng));
+        mapMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 18));
 
         /*mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if (mLastLocation != null) {
@@ -200,6 +202,7 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},REQUEST_ACCESS);
             return;
         }
+        LocationServices.FusedLocationApi.requestLocationUpdates(mGoogleApiClient, mLocationRequest, this);
     }
 
 
