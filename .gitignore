@@ -9,3 +9,4 @@
 .externalNativeBuild
 StayFit/app/res/values/google_maps_api.xml
 StayFit/app/src/debug/res/values/google_maps_api.xml
+StayFit/app/src/debug/
