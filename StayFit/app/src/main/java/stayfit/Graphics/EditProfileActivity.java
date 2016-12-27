@@ -117,7 +117,7 @@ public class EditProfileActivity extends AppCompatActivity {
                                 OutputStreamWriter outputStreamWriter= new OutputStreamWriter(outStream);
 
                                 for (User user : finalUsers) {
-                                 if(user.Pseudo.toString().equals(finalActualUser.toString()))
+                                 if(user.Pseudo.toString().equals(finalActualUser))
                                     {
 
                                         outputStreamWriter.write("[user=" + user.ID + ";" + user.Pseudo + ";" + user.Email + ";" + user.MDP + ";" + Integer.toString(npWeightKG.getValue()).toString()+ ";" + Integer.toString(npSize.getValue()).toString() + ";" + dayvalue.toString()+"."+monthvalue.toString()+"."+yearvalue.toString() + ";" + gender.toString() + "]" + "\n");
