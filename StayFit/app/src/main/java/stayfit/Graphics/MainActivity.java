@@ -153,8 +153,8 @@ public class MainActivity extends AppCompatActivity {
                         {
                             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                             passDataBaseBundle(intent,users,dataSamples);
+                            intent.putExtra("actualUser", ActualUser);
                             startActivityForResult(intent, ACTIVITY_RESULT_HOME);
-
 
                         }
                         else

@@ -73,12 +73,10 @@ public class EditProfileActivity extends AppCompatActivity {
         {
             Toast.makeText( getApplicationContext(), "FATAL DB ACCESS ERROR", Toast.LENGTH_LONG).show();
         }
-
         final List<User> finalUsers = users;
         final List<DataSample> finalDataSamples =dataSamples;
-        //final String finalActualUser = actualUser;
-        final String finalActualUser = "admin";
-
+        final String finalActualUser = actualUser;
+        //final String finalActualUser = "admin";
         for (User user : finalUsers) {
 
             if(user.Pseudo.equals(finalActualUser))
