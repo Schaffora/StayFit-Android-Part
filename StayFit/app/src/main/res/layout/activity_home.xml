@@ -20,14 +20,6 @@
         android:layout_alignParentEnd="true"
         android:color="#1E669B"/>
 
-    <Button
-        android:text="Record"
-        android:layout_width="wrap_content"
-        android:id="@+id/btnHomeRecord"
-        android:layout_height="240dp"
-        android:layout_above="@+id/btnHomeViewData"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true" />
 
     <Button
         android:text="View Data"
@@ -36,16 +28,58 @@
         android:id="@+id/btnHomeViewData"
         android:layout_above="@+id/btnHomeSettings"
         android:layout_alignParentStart="true"
+        android:layout_marginBottom="16dp"
         android:layout_alignParentEnd="true" />
 
-    <TextView
-        android:text="Stay Fit"
+    <Button
+        android:text="Record"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/btnHomeRecord"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="32dp"
-        android:id="@+id/textView13"
-        android:textSize="32sp"/>
+        android:id="@+id/btnHomeRecord"
+        android:layout_height="240dp"
+        android:layout_weight="1"
+        android:layout_above="@+id/btnHomeViewData"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="15dp"
+        android:layout_alignParentEnd="true" />
+
+    <RadioGroup
+        android:layout_width="fill_parent"
+        android:layout_height="70dp"
+        android:orientation="horizontal"
+        android:id="@+id/rbtnActivity"
+        android:layout_marginTop="77dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="48dp">
+
+        <RadioButton
+            android:text="Running"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rbtnHomeRun"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true" />
+
+
+        <RadioButton
+            android:text="Walking"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/rbtnHomeRun"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/rbtnHomeWalk" />
+
+        <RadioButton
+            android:text="Riding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/rbtnHomeRide"
+            android:layout_alignBaseline="@+id/rbtnHomeWalk"
+            android:layout_alignBottom="@+id/rbtnHomeWalk"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="17dp" />
+
+
+    </RadioGroup>
 
 </RelativeLayout>

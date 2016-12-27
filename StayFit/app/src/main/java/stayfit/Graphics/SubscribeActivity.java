@@ -2,7 +2,6 @@ package stayfit.Graphics;
 
 import android.content.Context;
 import android.content.Intent;
-import android.provider.MediaStore;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,10 +14,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.util.List;
 
-import stayfit.DataBase.ActivityType;
 import stayfit.DataBase.DataSample;
 import stayfit.DataBase.User;
 
@@ -48,13 +45,11 @@ public class SubscribeActivity extends AppCompatActivity {
 
         List<User> users = null;
         List<DataSample> dataSamples = null ;
-        List<ActivityType>activityTypes = null;
 
 
         if (extras != null) {
             users = (List<User>)extras.getSerializable("users");
             dataSamples = (List<DataSample>)extras.getSerializable("dataSamples");
-            activityTypes= (List<ActivityType>)extras.getSerializable("activityTypes");
         }
         else
         {
@@ -63,7 +58,6 @@ public class SubscribeActivity extends AppCompatActivity {
 
 
         final List<User> finalUsers = users;
-        final List<ActivityType> finalactivities =activityTypes;
         final List<DataSample> finalDataSamples =dataSamples;
         btnSubscribe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -105,10 +99,6 @@ public class SubscribeActivity extends AppCompatActivity {
                                 }
                                 int ID =finalUsers.size()+1;
                                 outputStreamWriter.write("[user="+ID+";"+etSubUsername.getText().toString()+";"+etSubbEmailAdress.getText().toString()+";"+etSubPassword.getText().toString()+";" +"0;" + "0;" +"0;"+"null]"+"\n");
-                                for (ActivityType activitis : finalactivities)
-                                {
-                                    outputStreamWriter.write("[activitytype="+activitis.ID +";"+activitis.Name+";"+activitis.Coef+"]"+"\n");
-                                }
                                 for(DataSample datasample :finalDataSamples)
                                 {
                                     String latsLongs="";
