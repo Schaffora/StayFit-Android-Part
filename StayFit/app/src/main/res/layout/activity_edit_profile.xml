@@ -78,21 +78,6 @@
                     android:layout_below="@+id/etProSize"
                     android:layout_alignEnd="@+id/textView9"
                     android:layout_alignParentStart="true" />
-
-
-            <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:orientation="horizontal"
-                android:gravity="center">
-
-               <NumberPicker
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:id="@+id/npWeightKG"
-                   android:layout_gravity="center"
-                   android:gravity="center">
-               </NumberPicker>
                <NumberPicker
                    android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
@@ -100,7 +85,6 @@
                    android:layout_gravity="center"
                    android:gravity="center">
                </NumberPicker>
-               </LinearLayout>
 
             <TextView
                     android:text="Gender"

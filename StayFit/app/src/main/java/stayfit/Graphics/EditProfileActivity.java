@@ -31,7 +31,6 @@ public class EditProfileActivity extends AppCompatActivity {
     private RadioButton rbtnProWomen;
     private RadioGroup rbtngGender;
     private NumberPicker npSize;
-    private NumberPicker npWeightKG;
     private NumberPicker npWeight;
 
     /* Intent OnCreate Method*/
@@ -48,13 +47,10 @@ public class EditProfileActivity extends AppCompatActivity {
         rbtngGender= (RadioGroup) findViewById(stayfit.R.id.rbtngGender);
         npSize = (NumberPicker) findViewById(stayfit.R.id.npSize);
         npWeight = (NumberPicker) findViewById(stayfit.R.id.npWeight);
-        npWeightKG = (NumberPicker) findViewById(stayfit.R.id.npWeightKG);
 
         /* Value initilisation */
-        npWeight.setMinValue(0);
-        npWeight.setMaxValue(9);
-        npWeightKG.setMinValue(20);
-        npWeightKG.setMaxValue(200);
+        npWeight.setMinValue(20);
+        npWeight.setMaxValue(200);
         npSize.setMinValue(50);
         npSize.setMaxValue(210);
 
@@ -80,37 +76,34 @@ public class EditProfileActivity extends AppCompatActivity {
 
         final List<User> finalUsers = users;
         final List<DataSample> finalDataSamples =dataSamples;
-        final String finalActualUser = actualUser;
+        //final String finalActualUser = actualUser;
+        final String finalActualUser = "admin";
 
-        /*for (User user : finalUsers) {
-            if(user.Pseudo.toString().equals(finalActualUser.toString()))
+        for (User user : finalUsers) {
+
+            if(user.Pseudo.equals(finalActualUser))
             {
-
-               if(user.Weight!=0)
-               {
-                    npWeight.setValue(user.Weight);
-                    npSize.setValue(user.Height);
-                    if(user.Gender.equals("male"))
-                    {
-                        rbtnProMen.setChecked(true);
-                        rbtnProWomen.setChecked(false);
-                    }
-                    else
-                    {
-                        rbtnProMen.setChecked(false);
-                        rbtnProWomen.setChecked(true);
-                    }
-                   String value[]=user.Birthdate.split(".");
-                   etProBirthDate.updateDate(Integer.parseInt(value[2]),Integer.parseInt(value[1]),Integer.parseInt(value[0]));
-               }
+                npWeight.setValue(user.Weight);
+                npSize.setValue(user.Height);
+                if(user.Gender.equals("male"))
+                {
+                    rbtnProMen.setChecked(true);
+                    rbtnProWomen.setChecked(false);
+                }
+                else
+                {
+                    rbtnProMen.setChecked(false);
+                    rbtnProWomen.setChecked(true);
+                }
+                String[] value=user.Birthdate.split("\\.");
+                etProBirthDate.updateDate(Integer.parseInt(value[2]),Integer.parseInt(value[1]),Integer.parseInt(value[0]));
             }
-        }*/
+        }
 
         btnProOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                    if(npSize.getValue()>49 && npWeightKG.getValue()>19)
+                    if(npSize.getValue()>49 && npWeight.getValue()>19)
                     {
                         if(rbtnProWomen.isChecked() == true || rbtnProMen.isChecked()==true)
                         {
@@ -138,10 +131,9 @@ public class EditProfileActivity extends AppCompatActivity {
                                 OutputStreamWriter outputStreamWriter= new OutputStreamWriter(outStream);
 
                                 for (User user : finalUsers) {
-                                 if(user.Pseudo.toString().equals(finalActualUser))
+                                 if(user.Pseudo.equals(finalActualUser))
                                     {
-
-                                        outputStreamWriter.write("[user=" + user.ID + ";" + user.Pseudo + ";" + user.Email + ";" + user.MDP + ";" + Integer.toString(npWeightKG.getValue()).toString()+ ";" + Integer.toString(npSize.getValue()).toString() + ";" + dayvalue.toString()+"."+monthvalue.toString()+"."+yearvalue.toString() + ";" + gender.toString() + "]" + "\n");
+                                        outputStreamWriter.write("[user=" + user.ID + ";" + user.Pseudo + ";" + user.Email + ";" + user.MDP + ";" + Integer.toString(npWeight.getValue()).toString()+ ";" + Integer.toString(npSize.getValue()).toString() + ";" + dayvalue.toString()+"."+monthvalue.toString()+"."+yearvalue.toString() + ";" + gender.toString() + "]" + "\n");
                                     }
                                     else
                                     {
