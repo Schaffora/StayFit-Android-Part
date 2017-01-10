@@ -1,6 +1,7 @@
 package stayfit.Graphics;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -37,7 +38,14 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import stayfit.DataBase.DataSample;
@@ -62,6 +70,7 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
     private int NB_OF_MARKERS=0;
     private int COVERED_DISTANCE=0;
     private double AVERAGE_SPEED=0;
+    private int CALORIES=0;
 
     /* Location Tools */
     private int REQUEST_ACCESS = 1;
@@ -75,6 +84,9 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
     private int FOOT_STEPS;
     private GoogleApiClient mGoogleApiClient;
 
+    /* Database tools*/
+    private List<String> lats;
+    private List<String> longs;
 
     /* Intent OnCreate Method*/
     @Override
@@ -122,6 +134,61 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
             @Override
             public void onClick(View v) {
                 chrnmtOnGoingCrono.stop();
+                try {
+                    Context context = getApplicationContext();
+                    File outputFile = new File(context.getFilesDir(),"DATABASE.txt");
+                    OutputStream outStream = new FileOutputStream(outputFile);
+                    OutputStreamWriter outputStreamWriter= new OutputStreamWriter(outStream);
+                    String ActualUserID="0";
+
+                    for (User user : finalUsers) {
+                            if(user.Pseudo.equals(finalActualUser))
+                            {
+                                ActualUserID=Integer.toString(user.ID);
+                            }
+                            outputStreamWriter.write("[user=" + user.ID + ";" + user.Pseudo + ";" + user.Email + ";" + user.MDP + ";" + user.Weight + ";" + user.Height + ";" + user.Birthdate + ";" + user.Gender + "]" + "\n");
+                    }
+                    for(DataSample datasample :finalDataSamples)
+                    {
+                        String latsLongs="";
+                        for(int i =0; i < datasample.lats.size(); i++)
+                        {
+                            latsLongs += ";" +datasample.lats.get(i).toString()+ "/"+datasample.longs.get(i).toString();
+                        }
+                        outputStreamWriter.write("[datasample="+datasample.ID +";"+datasample.USER_ID +";"+datasample.Duration +";"+datasample.Date+";"+datasample.ACTIVITY_ID+";"+datasample.Distance+";"+datasample.Steps+";"+datasample.Calories+latsLongs +"]"+"\n");
+                    }
+
+                    long elapsedSeconds = (SystemClock.elapsedRealtime() - chrnmtOnGoingCrono.getBase())/1000;
+                    String latsLongs="";
+                    for(int i =0; i < lats.size(); i++)
+                    {
+                            latsLongs += ";" +lats.get(i).toString()+ "/"+longs.get(i).toString();
+                    }
+                    String activityType="";
+                    if(finalChoosenActivity.equals("run"))
+                    {
+                        activityType="1";
+                    }
+                    if(finalChoosenActivity.equals("ride"))
+                    {
+                        activityType="3";
+                    }
+                    if(finalChoosenActivity.equals("walk"))
+                    {
+                        activityType="2";
+                    }
+                    String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+                    outputStreamWriter.write("[datasample="+finalDataSamples.size() +";"+ActualUserID +";"+String.valueOf(elapsedSeconds)+";"+date+";"+activityType+";"+COVERED_DISTANCE+";"+FOOT_STEPS+";"+CALORIES+latsLongs +"]"+"\n");
+
+                    outputStreamWriter.close();
+
+
+                    setResult(RESULT_OK);
+                    finish();
+                }
+                catch (IOException e) {
+
+                }
                 finish();
             }
         });
@@ -173,6 +240,8 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
         }
 
         LatLng latlng = new LatLng(location.getLatitude(), location.getLongitude());
+        longs.add(Double.toString(location.getLongitude()));
+        lats.add(Double.toString(location.getLatitude()));
         mapLatsLongsList.add(location.getLatitude());
         mapLatsLongsList.add(location.getLongitude());
         NB_OF_MARKERS++;
