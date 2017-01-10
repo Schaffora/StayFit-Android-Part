@@ -70,7 +70,6 @@ public class HomeActivity extends AppCompatActivity {
 
 
         /* Gestion des cliques sur les bouttons */
-        btnHomeRecord.setBackgroundColor(Color.BLUE);
 
         btnHomeRecord.setOnClickListener(new View.OnClickListener() {
             @Override
