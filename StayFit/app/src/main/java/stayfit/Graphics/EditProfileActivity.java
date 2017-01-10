@@ -110,8 +110,7 @@ public class EditProfileActivity extends AppCompatActivity {
                                 int month = etProBirthDate.getMonth();
                                 int day = etProBirthDate.getDayOfMonth();
 
-                                String Str = Integer.toString(year);
-                                String yearvalue=Str.substring(2);
+                                String yearvalue=Integer.toString(year);
                                 String monthvalue=Integer.toString(month);
                                 String dayvalue=Integer.toString(day);
 
@@ -149,15 +148,12 @@ public class EditProfileActivity extends AppCompatActivity {
                                     outputStreamWriter.write("[datasample="+datasample.ID +";"+datasample.USER_ID +";"+datasample.Duration +";"+datasample.Date+";"+datasample.ACTIVITY_ID+";"+datasample.Distance+";"+datasample.Steps+";"+datasample.Calories+latsLongs +"]"+"\n");
                                 }
                                 outputStreamWriter.close();
-
-
+                                outStream.close();
                                 setResult(RESULT_OK);
                                 finish();
                             }
                             catch (IOException e) {
-
                             }
-
                         }
                         else
                         {

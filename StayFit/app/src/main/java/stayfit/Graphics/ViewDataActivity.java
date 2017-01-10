@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import stayfit.DataBase.DataSample;
@@ -16,11 +18,11 @@ import stayfit.R;
 
 public class ViewDataActivity extends AppCompatActivity {
     private ListView lstDataViewDataSampleList;
-
+    private ArrayList<String> DataSampleList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(stayfit.R.layout.activity_view_data);
+        setContentView(R.layout.activity_view_data);
         lstDataViewDataSampleList=(ListView) findViewById(R.id.lstDataViewDataSampleList);
 
         /* DataBase tools*/
@@ -45,6 +47,22 @@ public class ViewDataActivity extends AppCompatActivity {
         final List<User> finalUsers = users;
         final List<DataSample> finalDataSamples = dataSamples;
         final String finalActualUser = actualUser;
+        int idUser=0;
+        for (User user : finalUsers){
+            if(user.Pseudo.equals(finalActualUser)){
+                idUser=user.ID;
+            }
+        }
+        DataSampleList = new ArrayList<String>();
+        for (DataSample data : finalDataSamples) {
+            if(data.USER_ID==idUser){
+                DataSampleList.add("Date :"+data.Date +" Duration :"+ data.Duration);
+            }
+        }
+        ArrayAdapter<String> arrayAdapter =
+                new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, DataSampleList);
+        lstDataViewDataSampleList.setAdapter(arrayAdapter);
+
 
         lstDataViewDataSampleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -53,4 +71,7 @@ public class ViewDataActivity extends AppCompatActivity {
             }
         });
     }
+
 }
+
+

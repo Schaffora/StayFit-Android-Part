@@ -258,9 +258,12 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
             int distance= getDistanceGPSPoint(mapLatsLongsList.get(size-4),mapLatsLongsList.get(size-3),mapLatsLongsList.get(size-2),mapLatsLongsList.get(size-1));
             COVERED_DISTANCE+=distance;
             txtVOnGoingDistance.setText("Distance " + COVERED_DISTANCE);
-            long elapsedSeconds = (SystemClock.elapsedRealtime() - chrnmtOnGoingCrono.getBase())/1000;
-            AVERAGE_SPEED=((Number)elapsedSeconds).intValue()/COVERED_DISTANCE;
-            txtVOnGoingSpeedAverage.setText("Vitesse moyenne: "+AVERAGE_SPEED);
+            if(COVERED_DISTANCE>0)
+            {
+                long elapsedSeconds = (SystemClock.elapsedRealtime() - chrnmtOnGoingCrono.getBase())/1000;
+                AVERAGE_SPEED=((Number)elapsedSeconds).intValue()/COVERED_DISTANCE;
+                txtVOnGoingSpeedAverage.setText("Vitesse moyenne: "+AVERAGE_SPEED);
+            }
         }
 
         mapMap.addMarker(new MarkerOptions().position(latlng).title("Marker "+ Integer.toString(NB_OF_MARKERS)).snippet("Actual Position"));
