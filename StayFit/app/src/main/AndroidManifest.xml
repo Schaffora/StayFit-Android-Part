@@ -13,8 +13,8 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.BODY_SENSORS"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.BODY_SENSORS" />
 
     <uses-feature android:name="android.hardware.sensor.stepcounter" />
     <uses-feature android:name="android.hardware.sensor.stepdetector" />
@@ -49,9 +49,10 @@
 
         <activity
             android:name=".Graphics.OnGoingActivity"
-            android:screenOrientation="portrait"
-            android:label="@string/title_activity_on_going" />
-        <activity android:name=".Graphics.ViewDataActivity"></activity>
+            android:label="@string/title_activity_on_going"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Graphics.ViewDataActivity" />
+        <activity android:name=".Graphics.DisplayDataActivity"></activity>
     </application>
 
 </manifest>
