@@ -76,7 +76,7 @@ public class EditProfileActivity extends AppCompatActivity {
         final List<User> finalUsers = users;
         final List<DataSample> finalDataSamples =dataSamples;
         final String finalActualUser = actualUser;
-        //final String finalActualUser = "admin";
+
         for (User user : finalUsers) {
 
             if(user.Pseudo.equals(finalActualUser))
