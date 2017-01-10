@@ -94,6 +94,8 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_on_going);
 
+        lats=new ArrayList<String>();
+        longs=new ArrayList<String>();
         List<User> users = null;
         List<DataSample> dataSamples = null ;
         String actualUser ="";
