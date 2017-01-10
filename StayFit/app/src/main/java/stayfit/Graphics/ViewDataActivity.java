@@ -19,6 +19,7 @@ import stayfit.R;
 public class ViewDataActivity extends AppCompatActivity {
     private ListView lstDataViewDataSampleList;
     private ArrayList<String> DataSampleList;
+    private ArrayList<Integer> DataSampleKey;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,24 +55,39 @@ public class ViewDataActivity extends AppCompatActivity {
             }
         }
         DataSampleList = new ArrayList<String>();
+        DataSampleKey = new ArrayList<Integer>();
         for (DataSample data : finalDataSamples) {
             if(data.USER_ID==idUser){
                 DataSampleList.add("Date :"+data.Date +" Duration :"+ data.Duration);
+                DataSampleKey.add(data.ID);
             }
         }
-        ArrayAdapter<String> arrayAdapter =
-                new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, DataSampleList);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, DataSampleList);
         lstDataViewDataSampleList.setAdapter(arrayAdapter);
 
 
         lstDataViewDataSampleList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                
+                DataSample currentDataSample=null;
+                for (DataSample data : finalDataSamples) {
+                    if(data.ID==position){
+                        currentDataSample=data;
+                    }
+                }
+                Intent intent = new Intent(ViewDataActivity.this, DisplayDataActivity.class);
+
+                passDataBaseBundle(intent, currentDataSample);
+                intent.putExtra("actualUser", finalActualUser);
+                startActivityForResult(intent, 0);
             }
         });
     }
-
+    private void passDataBaseBundle(Intent intent,DataSample dataSample) {
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("dataSample",dataSample);
+        intent.putExtras(bundle);
+    }
 }
 
 
