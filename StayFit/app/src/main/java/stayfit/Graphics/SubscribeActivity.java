@@ -98,7 +98,7 @@ public class SubscribeActivity extends AppCompatActivity {
                                     outputStreamWriter.write("[user="+user.ID +";" +user.Pseudo+";"+user.Email +";"+user.MDP+";"+user.Weight+";"+user.Height +";"+user.Birthdate +";"+user.Gender +"]"+"\n");
                                 }
                                 int ID =finalUsers.size()+1;
-                                outputStreamWriter.write("[user="+ID+";"+etSubUsername.getText().toString()+";"+etSubbEmailAdress.getText().toString()+";"+etSubPassword.getText().toString()+";" +"0;" + "0;" +"0;"+"null]"+"\n");
+                                outputStreamWriter.write("[user="+ID+";"+etSubUsername.getText().toString()+";"+etSubbEmailAdress.getText().toString()+";"+etSubPassword.getText().toString()+";" +"1;" + "1;" +"1970;"+"null]"+"\n");
                                 for(DataSample datasample :finalDataSamples)
                                 {
                                     String latsLongs="";

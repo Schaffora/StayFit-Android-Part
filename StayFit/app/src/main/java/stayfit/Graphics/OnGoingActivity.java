@@ -180,6 +180,7 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
                         activityType="2";
                     }
                     String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
                     outputStreamWriter.write("[datasample="+finalDataSamples.size() +";"+ActualUserID +";"+String.valueOf(elapsedSeconds)+";"+date+";"+activityType+";"+COVERED_DISTANCE+";"+FOOT_STEPS+";"+CALORIES+latsLongs +"]"+"\n");
 
                     outputStreamWriter.close();
