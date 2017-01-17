@@ -102,7 +102,6 @@ public class DisplayDataActivity extends FragmentActivity implements OnMapReadyC
 
     protected void onStart() {
         mGoogleApiClient.connect();
-
         super.onStart();
     }
 
@@ -112,13 +111,10 @@ public class DisplayDataActivity extends FragmentActivity implements OnMapReadyC
     }
     @Override
     public void onConnected(@Nullable Bundle bundle) {
-
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION},1);
-            return;
         }
     }
-
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {

@@ -120,26 +120,6 @@
             </RadioGroup>
 
 
-            <TextView
-                android:text="Network"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/rbtnProWomen"
-                android:layout_alignParentStart="true"
-                android:layout_marginTop="25dp"
-                android:id="@+id/textView12" />
-
-                <Switch
-                    android:text="Mobile Data communication"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/swProMobileData"
-                    android:layout_below="@+id/textView12"
-                    android:layout_marginTop="14dp"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentStart="true" />
-
-
             <Button
                 android:text="Ok"
                 android:layout_width="wrap_content"
