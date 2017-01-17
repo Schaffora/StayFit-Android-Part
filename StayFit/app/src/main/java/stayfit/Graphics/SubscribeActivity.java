@@ -2,8 +2,8 @@ package stayfit.Graphics;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -90,7 +90,6 @@ public class SubscribeActivity extends AppCompatActivity {
                             try {
                                 Context context = getApplicationContext();
                                 File outputFile = new File(context.getFilesDir(),"DATABASE.txt");
-
                                 OutputStream outStream = new FileOutputStream(outputFile);
                                 OutputStreamWriter outputStreamWriter= new OutputStreamWriter(outStream);
 
@@ -98,7 +97,7 @@ public class SubscribeActivity extends AppCompatActivity {
                                     outputStreamWriter.write("[user="+user.ID +";" +user.Pseudo+";"+user.Email +";"+user.MDP+";"+user.Weight+";"+user.Height +";"+user.Birthdate +";"+user.Gender +"]"+"\n");
                                 }
                                 int ID =finalUsers.size()+1;
-                                outputStreamWriter.write("[user="+ID+";"+etSubUsername.getText().toString()+";"+etSubbEmailAdress.getText().toString()+";"+etSubPassword.getText().toString()+";" +"1;" + "1;" +"1970;"+"null]"+"\n");
+                                outputStreamWriter.write("[user="+ID+";"+etSubUsername.getText().toString()+";"+etSubbEmailAdress.getText().toString()+";"+etSubPassword.getText().toString()+";" +"0;" + "0;" +"1.1.1970;"+"male]"+"\n");
                                 for(DataSample datasample :finalDataSamples)
                                 {
                                     String latsLongs="";
