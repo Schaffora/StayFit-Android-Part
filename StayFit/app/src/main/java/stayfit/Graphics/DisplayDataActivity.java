@@ -3,6 +3,7 @@ package stayfit.Graphics;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,6 +24,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.util.ArrayList;
+
 import stayfit.DataBase.DataSample;
 import stayfit.R;
 
@@ -34,6 +37,8 @@ public class DisplayDataActivity extends FragmentActivity implements OnMapReadyC
     private TextView txtDist;
     private GoogleMap mapMap;
     private GoogleApiClient mGoogleApiClient;
+    private DataSample dataSample;
+    private ArrayList<LatLng> coordList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +47,7 @@ public class DisplayDataActivity extends FragmentActivity implements OnMapReadyC
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        DataSample dataSample = null ;
+
         dataSample = (DataSample)extras.getSerializable("dataSample");
 //        Toast.makeText( getApplicationContext(), dataSample.ID, Toast.LENGTH_LONG).show();
 //        Toast.makeText(getApplicationContext(),dataSample+"",Toast.LENGTH_LONG).show();
@@ -51,6 +56,8 @@ public class DisplayDataActivity extends FragmentActivity implements OnMapReadyC
         txtFootSteps=(TextView)findViewById(R.id.txtFootSteps);
         txtCal=(TextView)findViewById(R.id.txtCalories);
         txtDist=(TextView)findViewById(R.id.txtDistance);
+
+        coordList = new ArrayList<>();
 
         //time in seconds
         int dtTime=dataSample.Duration;
@@ -73,21 +80,24 @@ public class DisplayDataActivity extends FragmentActivity implements OnMapReadyC
                     .addApi(LocationServices.API)
                     .build();
         }
+        for(int i =0; i < dataSample.lats.size(); i++)
+        {
+            coordList.add(new LatLng(Double.parseDouble(dataSample.lats.get(i).toString()), Double.parseDouble(dataSample.longs.get(i))));
+        }
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mapMap = googleMap;
-        // Add a marker in Sydney and move the camera
-        mapMap.addPolyline(new PolylineOptions().geodesic(true)
-                .add(new LatLng(-33.866, 151.195))
-                .add(new LatLng(-33.864, 151.193))
-                .add(new LatLng(-33.866, 151.198))
-                .add(new LatLng(-33.867, 151.203))
-        );
-        LatLng sydney = new LatLng(-33.866, 151.195);
-        mapMap.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 14));
-        mapMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        PolylineOptions polylineOptions = new PolylineOptions();
+        polylineOptions.addAll(coordList);
+        polylineOptions
+                .width(5)
+                .color(Color.RED);
+        mapMap.addPolyline(polylineOptions);
+        LatLng last = new LatLng(coordList.get(coordList.size()-1).latitude, coordList.get(coordList.size()-1).longitude);
+        mapMap.moveCamera(CameraUpdateFactory.newLatLngZoom(last, 18));
+        mapMap.moveCamera(CameraUpdateFactory.newLatLng(last));
     }
 
     protected void onStart() {
