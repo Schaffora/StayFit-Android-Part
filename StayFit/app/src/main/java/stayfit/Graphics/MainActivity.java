@@ -119,9 +119,9 @@ public class MainActivity extends AppCompatActivity {
         /* DataBase List initialisation */
         users = new ArrayList<User>();
         dataSamples = new ArrayList<DataSample>();
-        getDataBase();
-
-
+//        getDataBase();
+        DATABASE= new ArrayList<String>();
+        DataBaseRefresh();
         /* Component Initialisation */
         btnLogSubscribe = (Button) findViewById(stayfit.R.id.btnLobSubscribe);
         btnLogLogIn = (Button)findViewById(stayfit.R.id.btnLogLogIn);

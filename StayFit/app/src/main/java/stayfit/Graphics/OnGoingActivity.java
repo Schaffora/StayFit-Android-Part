@@ -143,6 +143,7 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
                     OutputStreamWriter outputStreamWriter= new OutputStreamWriter(outStream);
                     String ActualUserID="0";
 
+                    //TODO: this shouldn't be used but without it, users seem to be suppressed when we go here
                     for (User user : finalUsers) {
                             if(user.Pseudo.equals(finalActualUser))
                             {
