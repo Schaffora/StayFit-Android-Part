@@ -71,7 +71,7 @@ public class ViewDataActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 DataSample currentDataSample=null;
                 for (DataSample data : finalDataSamples) {
-                    if(data.ID==position){
+                    if(data.ID==DataSampleKey.get(position)){
                         currentDataSample=data;
                     }
                 }
