@@ -54,6 +54,7 @@ import java.util.Date;
 import java.util.List;
 
 import stayfit.DataBase.DataSample;
+import stayfit.DataBase.DatabaseAcesser;
 import stayfit.DataBase.User;
 import stayfit.R;
 
@@ -85,7 +86,9 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
     /* Lists*/
     private List<User> users;
     private List<DataSample> dataSamples;
-    private List<String> DATABASE;
+
+    /* Database acesser */
+    private DatabaseAcesser dba;
 
     /* Sensor */
     private SensorManager sensorManager;
@@ -105,15 +108,15 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
 
         lats=new ArrayList<String>();
         longs=new ArrayList<String>();
+
          /* DataBase List initialisation */
-        users = new ArrayList<User>();
-        dataSamples = new ArrayList<DataSample>();
+        dba= new DatabaseAcesser(getApplicationContext());
+        users = dba.getUsers();
+        dataSamples=dba.getDataSamples();
+
+        /*Intent bundle */
         String actualUser ="";
         String choosenActivity="";
-        //getDataBase();
-        DATABASE= new ArrayList<String>();
-        DataBaseRefresh();
-
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -146,63 +149,29 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
             @Override
             public void onClick(View v) {
                 chrnmtOnGoingCrono.stop();
-                try {
-                    Context context = getApplicationContext();
-                    File outputFile = new File(context.getFilesDir(),"DATABASE.txt");
-                    OutputStream outStream = new FileOutputStream(outputFile);
-                    OutputStreamWriter outputStreamWriter= new OutputStreamWriter(outStream);
-                    String ActualUserID="0";
-
-                    //TODO: this shouldn't be used but without it, users seem to be suppressed when we go here
-                    for (User user : users) {
-                            if(user.Pseudo.equals(finalActualUser))
-                            {
-                                ActualUserID=Integer.toString(user.ID);
-                            }
-                            outputStreamWriter.write("[user=" + user.ID + ";" + user.Pseudo + ";" + user.Email + ";" + user.MDP + ";" + user.Weight + ";" + user.Height + ";" + user.Birthdate + ";" + user.Gender + "]" + "\n");
-                    }
-                    for(DataSample datasample :dataSamples)
-                    {
-                        String latsLongs="";
-                        for(int i =0; i < datasample.lats.size(); i++)
-                        {
-                            latsLongs += ";" +datasample.lats.get(i).toString()+ "/"+datasample.longs.get(i).toString();
-                        }
-                        outputStreamWriter.write("[datasample="+datasample.ID +";"+datasample.USER_ID +";"+datasample.Duration +";"+datasample.Date+";"+datasample.ACTIVITY_ID+";"+datasample.Distance+";"+datasample.Steps+";"+datasample.Calories+latsLongs +"]"+"\n");
-                    }
-
-                    long elapsedSeconds = (SystemClock.elapsedRealtime() - chrnmtOnGoingCrono.getBase())/1000;
-                    String latsLongs="";
-                    for(int i =0; i < lats.size(); i++)
-                    {
-                            latsLongs += ";" +lats.get(i).toString()+ "/"+longs.get(i).toString();
-                    }
-                    String activityType="";
-                    if(finalChoosenActivity.equals("run"))
-                    {
-                        activityType="1";
-                    }
-                    if(finalChoosenActivity.equals("ride"))
-                    {
-                        activityType="3";
-                    }
-                    if(finalChoosenActivity.equals("walk"))
-                    {
-                        activityType="2";
-                    }
-                    String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-
-                    outputStreamWriter.write("[datasample="+dataSamples.size() +";"+ActualUserID +";"+String.valueOf(elapsedSeconds)+";"+date+";"+activityType+";"+COVERED_DISTANCE+";"+FOOT_STEPS+";"+CALORIES+latsLongs +"]"+"\n");
-
-                    outputStreamWriter.close();
-
-
-                    setResult(RESULT_OK);
-                    finish();
+                long elapsedSeconds = (SystemClock.elapsedRealtime() - chrnmtOnGoingCrono.getBase())/1000;
+                String latsLongs="";
+                for(int i =0; i < lats.size(); i++)
+                {
+                    latsLongs += ";" +lats.get(i).toString()+ "/"+longs.get(i).toString();
                 }
-                catch (IOException e) {
-
+                String activityType="";
+                if(finalChoosenActivity.equals("run"))
+                {
+                    activityType="1";
                 }
+                if(finalChoosenActivity.equals("ride"))
+                {
+                    activityType="3";
+                }
+                if(finalChoosenActivity.equals("walk"))
+                {
+                    activityType="2";
+                }
+                String date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+
+                dba.saveDataSample(finalActualUser,date,elapsedSeconds,activityType,COVERED_DISTANCE,FOOT_STEPS,CALORIES,latsLongs);
+                setResult(RESULT_OK);
                 finish();
             }
         });
@@ -358,86 +327,5 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
     @Override
     public void onConnectionSuspended(int i) {
         Log.i("Connection suspended", String.valueOf(i));
-    }
-    public void DataBaseRefresh()
-    {
-        Context context = getApplicationContext();
-        try {
-
-            InputStream inputStream = context.openFileInput("DATABASE.txt");
-            users.clear();
-            dataSamples.clear();
-            DATABASE.clear();
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            String line = null;
-            try {
-                line = reader.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            DATABASE.add(line);
-
-            while (line !=null)
-            {
-                try {
-                    line =reader.readLine();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                DATABASE.add(line);
-            }
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            for(int i=0; i<DATABASE.size();i++)
-            {
-                if (DATABASE.get(i) != null) {
-                    DataBaseInterpret(DATABASE.get(i));
-                }
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-    public void DataBaseInterpret(String line)
-    {
-        if(line!=null)
-        {
-
-            String datas=line.substring(1,line.length()-1);
-            List <String> dataTypes = Arrays.asList(datas.split("\\s*=\\s*"));
-            List<String> values =Arrays.asList(dataTypes.get(1).split("\\s*;\\s*"));
-
-            if(dataTypes.get(0).equals("user"))
-            {
-                users.add(new User(Integer.parseInt(values.get(0)),values.get(1),values.get(2),values.get(3),Integer.parseInt(values.get(4)),Integer.parseInt(values.get(5)),values.get(6),values.get(7)));
-            }
-
-            if(dataTypes.get(0).equals("datasample"))
-            {
-                List<String> lats = new ArrayList<String>();
-                List<String> longs = new ArrayList<String>();
-
-                for(int i=8; i<values.size(); i++)
-                {
-                    if(values.get(i) !=null)
-                    {
-                        String[]LatLong= values.get(i).split("/");
-                        lats.add(LatLong[0]);
-                        longs.add(LatLong[1]);
-                    }
-
-                }
-                dataSamples.add(new DataSample(Integer.parseInt(values.get(0)),Integer.parseInt(values.get(1)),Integer.parseInt(values.get(2)),values.get(3),Integer.parseInt(values.get(4)),Integer.parseInt(values.get(5)),Integer.parseInt(values.get(6)),Integer.parseInt(values.get(7)),lats,longs));
-            }
-            else{}
-
-        }
-
-
     }
 }

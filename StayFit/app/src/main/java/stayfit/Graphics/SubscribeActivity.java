@@ -23,6 +23,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import stayfit.DataBase.DataSample;
+import stayfit.DataBase.DatabaseAcesser;
 import stayfit.DataBase.User;
 
 public class SubscribeActivity extends AppCompatActivity {
@@ -37,7 +38,9 @@ public class SubscribeActivity extends AppCompatActivity {
     /* Lists*/
     private List<User> users;
     private List<DataSample> dataSamples;
-    private List<String> DATABASE;
+
+    /* Database acesser */
+    private DatabaseAcesser dba;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,17 +54,15 @@ public class SubscribeActivity extends AppCompatActivity {
         etSubPassword=(EditText)findViewById(stayfit.R.id.etSubPassword);
         etSubUsername=(EditText)findViewById(stayfit.R.id.etSubUserName) ;
 
+        /* DataBase List initialisation */
+        dba= new DatabaseAcesser(getApplicationContext());
+        users = dba.getUsers();
+        dataSamples=dba.getDataSamples();
+
+        /*Intent bundle */
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-
-        /* DataBase List initialisation */
-        users = new ArrayList<User>();
-        dataSamples = new ArrayList<DataSample>();
         String actualUser ="";
-        //getDataBase();
-        DATABASE= new ArrayList<String>();
-        DataBaseRefresh();
-
 
         btnSubscribe.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -74,9 +75,6 @@ public class SubscribeActivity extends AppCompatActivity {
 
                         boolean emailDisponible = true;
                         boolean pseudoDisponible = true;
-
-                        
-
                         for (User user : users) {
                             if(user.Pseudo.toString().equals(etSubUsername.getText().toString()))
                             {
@@ -87,37 +85,11 @@ public class SubscribeActivity extends AppCompatActivity {
                                 emailDisponible = false;
                             }
                         }
-
                         if(emailDisponible == true && pseudoDisponible==true)
                         {
-
-                            try {
-                                Context context = getApplicationContext();
-                                File outputFile = new File(context.getFilesDir(),"DATABASE.txt");
-                                OutputStream outStream = new FileOutputStream(outputFile);
-                                OutputStreamWriter outputStreamWriter= new OutputStreamWriter(outStream);
-
-                                for (User user : users) {
-                                    outputStreamWriter.write("[user="+user.ID +";" +user.Pseudo+";"+user.Email +";"+user.MDP+";"+user.Weight+";"+user.Height +";"+user.Birthdate +";"+user.Gender +"]"+"\n");
-                                }
-                                int ID =users.size()+1;
-                                outputStreamWriter.write("[user="+ID+";"+etSubUsername.getText().toString()+";"+etSubbEmailAdress.getText().toString()+";"+etSubPassword.getText().toString()+";" +"0;" + "0;" +"1.1.1970;"+"male]"+"\n");
-                                for(DataSample datasample :dataSamples)
-                                {
-                                    String latsLongs="";
-                                    for(int i =0; i < datasample.lats.size(); i++)
-                                    {
-                                        latsLongs += ";" +datasample.lats.get(i).toString()+ "/"+datasample.longs.get(i).toString();
-                                    }
-                                    outputStreamWriter.write("[datasample="+datasample.ID +";"+datasample.USER_ID +";"+datasample.Duration +";"+datasample.Date+";"+datasample.ACTIVITY_ID+";"+datasample.Distance+";"+datasample.Steps+";"+datasample.Calories+latsLongs +"]"+"\n");
-                                }
-                                outputStreamWriter.close();
-                                setResult(RESULT_OK);
-                                finish();
-                            }
-                            catch (IOException e) {
-                            }
-
+                            dba.createUser(etSubUsername.getText().toString(),etSubbEmailAdress.getText().toString(),etSubPassword.getText().toString());
+                            setResult(RESULT_OK);
+                            finish();
                         }
                         else
                         {
@@ -129,15 +101,12 @@ public class SubscribeActivity extends AppCompatActivity {
                             {
                                 Toast.makeText( getApplicationContext(), "Pseudo already used", Toast.LENGTH_LONG).show();
                             }
-
-
                         }
                     }
                     else
                     {
                         Toast.makeText( getApplicationContext(), "Passwords don't match", Toast.LENGTH_LONG).show();
                     }
-
                 }
                 else
                 {
@@ -145,86 +114,5 @@ public class SubscribeActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-    public void DataBaseRefresh()
-    {
-        Context context = getApplicationContext();
-        try {
-
-            InputStream inputStream = context.openFileInput("DATABASE.txt");
-            users.clear();
-            dataSamples.clear();
-            DATABASE.clear();
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
-            String line = null;
-            try {
-                line = reader.readLine();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            DATABASE.add(line);
-
-            while (line !=null)
-            {
-                try {
-                    line =reader.readLine();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-                DATABASE.add(line);
-            }
-            try {
-                inputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            for(int i=0; i<DATABASE.size();i++)
-            {
-                if (DATABASE.get(i) != null) {
-                    DataBaseInterpret(DATABASE.get(i));
-                }
-            }
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-    public void DataBaseInterpret(String line)
-    {
-        if(line!=null)
-        {
-
-            String datas=line.substring(1,line.length()-1);
-            List <String> dataTypes = Arrays.asList(datas.split("\\s*=\\s*"));
-            List<String> values =Arrays.asList(dataTypes.get(1).split("\\s*;\\s*"));
-
-            if(dataTypes.get(0).equals("user"))
-            {
-                users.add(new User(Integer.parseInt(values.get(0)),values.get(1),values.get(2),values.get(3),Integer.parseInt(values.get(4)),Integer.parseInt(values.get(5)),values.get(6),values.get(7)));
-            }
-
-            if(dataTypes.get(0).equals("datasample"))
-            {
-                List<String> lats = new ArrayList<String>();
-                List<String> longs = new ArrayList<String>();
-
-                for(int i=8; i<values.size(); i++)
-                {
-                    if(values.get(i) !=null)
-                    {
-                        String[]LatLong= values.get(i).split("/");
-                        lats.add(LatLong[0]);
-                        longs.add(LatLong[1]);
-                    }
-
-                }
-                dataSamples.add(new DataSample(Integer.parseInt(values.get(0)),Integer.parseInt(values.get(1)),Integer.parseInt(values.get(2)),values.get(3),Integer.parseInt(values.get(4)),Integer.parseInt(values.get(5)),Integer.parseInt(values.get(6)),Integer.parseInt(values.get(7)),lats,longs));
-            }
-            else{}
-
-        }
-
-
     }
 }
