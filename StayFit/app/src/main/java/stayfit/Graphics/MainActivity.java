@@ -134,7 +134,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, SubscribeActivity.class);
-                passDataBaseBundle(intent,users,dataSamples);
+
                 startActivityForResult(intent, ACTIVITY_RESULT_SUBSCRIBE);
             }
         });
@@ -152,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
                         if(users.get(i).Weight !=0)
                         {
                             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                            passDataBaseBundle(intent,users,dataSamples);
                             intent.putExtra("actualUser", ActualUser);
                             startActivityForResult(intent, ACTIVITY_RESULT_HOME);
 
@@ -160,7 +159,6 @@ public class MainActivity extends AppCompatActivity {
                         else
                         {
                             Intent intent = new Intent(MainActivity.this, EditProfileActivity.class);
-                            passDataBaseBundle(intent,users,dataSamples);
                             intent.putExtra("actualUser", ActualUser);
                             startActivityForResult(intent, ACTIVITY_RESULT_EDIT_PROFILE);
                         }
@@ -178,12 +176,6 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void passDataBaseBundle(Intent intent, List<User> users, List<DataSample> dataSamples) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("users",(Serializable)users);
-        bundle.putSerializable("dataSamples",(Serializable)dataSamples);
-        intent.putExtras(bundle);
-    }
 
     /* On activity back result */
     @Override
@@ -208,7 +200,6 @@ public class MainActivity extends AppCompatActivity {
                     if(etLogPassword.getText().toString().equals(ActualUserMDP) && etLogUserName.getText().toString().equals(ActualUser))
                     {
                         Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                        passDataBaseBundle(intent,users,dataSamples);
                         intent.putExtra("actualUser", ActualUser);
                         startActivityForResult(intent, ACTIVITY_RESULT_HOME);
 

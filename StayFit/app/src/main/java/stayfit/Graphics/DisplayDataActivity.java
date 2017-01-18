@@ -49,8 +49,7 @@ public class DisplayDataActivity extends FragmentActivity implements OnMapReadyC
         Bundle extras = intent.getExtras();
 
         dataSample = (DataSample)extras.getSerializable("dataSample");
-//        Toast.makeText( getApplicationContext(), dataSample.ID, Toast.LENGTH_LONG).show();
-//        Toast.makeText(getApplicationContext(),dataSample+"",Toast.LENGTH_LONG).show();
+
 
         txtVMoy= (TextView)findViewById(R.id.txtVMoy);
         txtFootSteps=(TextView)findViewById(R.id.txtFootSteps);

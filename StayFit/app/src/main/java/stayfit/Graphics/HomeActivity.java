@@ -50,18 +50,18 @@ public class HomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(stayfit.R.layout.activity_home);
 
-        /* DataBase tools*/
+        /* DataBase List initialisation */
         users = new ArrayList<User>();
         dataSamples = new ArrayList<DataSample>();
         String actualUser ="";
-        DATABASE = new ArrayList<String>();
+        //getDataBase();
+        DATABASE= new ArrayList<String>();
+        DataBaseRefresh();
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
 
         if (extras != null) {
-            users = (List<User>)extras.getSerializable("users");
-            dataSamples = (List<DataSample>)extras.getSerializable("dataSamples");
             actualUser= intent.getStringExtra("actualUser");
         }
         else
@@ -69,8 +69,6 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText( getApplicationContext(), "FATAL DB ACCESS ERROR", Toast.LENGTH_LONG).show();
         }
 
-        final List<User> finalUsers = users;
-        final List<DataSample> finalDataSamples = dataSamples;
         final String finalActualUser = actualUser;
 
         /* Component Initialisation */
@@ -86,14 +84,12 @@ public class HomeActivity extends AppCompatActivity {
         rbtnHomeWalk.setChecked(true);
 
 
-
         /* Gestion des cliques sur les bouttons */
 
         btnHomeRecord.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HomeActivity.this, OnGoingActivity.class);
-                passDataBaseBundle(intent, finalUsers, finalDataSamples);
                 intent.putExtra("actualUser", finalActualUser);
                 if(rbtnHomeWalk.isChecked()==true)
                 {
@@ -117,7 +113,6 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HomeActivity.this, ViewDataActivity.class);
-                passDataBaseBundle(intent, finalUsers, finalDataSamples);
                 intent.putExtra("actualUser", finalActualUser);
                 startActivityForResult(intent, 0);
             }
@@ -127,18 +122,12 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(HomeActivity.this, EditProfileActivity.class);
-                passDataBaseBundle(intent, finalUsers, finalDataSamples);
                 intent.putExtra("actualUser", finalActualUser);
                 startActivityForResult(intent, 0);
             }
         });
     }
-    private void passDataBaseBundle(Intent intent, List<User> users, List<DataSample> dataSamples) {
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("users",(Serializable)users);
-        bundle.putSerializable("dataSamples",(Serializable)dataSamples);
-        intent.putExtras(bundle);
-    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -148,7 +137,7 @@ public class HomeActivity extends AppCompatActivity {
             case 100:
                 if (resultCode == RESULT_OK) {
                     Toast.makeText(this, "New user was created. ", Toast.LENGTH_LONG).show();
-                    //DataBaseRefresh();
+                    DataBaseRefresh();
                 }
                 break;
             default:
