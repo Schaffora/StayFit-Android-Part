@@ -1,6 +1,5 @@
 package stayfit.Graphics;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,13 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import stayfit.DataBase.DataSample;
@@ -54,7 +47,6 @@ public class ViewDataActivity extends AppCompatActivity {
 
         if (extras != null) {
             actualUser= intent.getStringExtra("actualUser");
-            Toast.makeText( getApplicationContext(), "Welcome "+actualUser, Toast.LENGTH_LONG).show();
         }
         else
         {
