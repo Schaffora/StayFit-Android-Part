@@ -20,8 +20,7 @@
         android:hint="Username"
         android:layout_above="@+id/etLogPassword"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="25dp"
-        android:text="admin" />
+        android:layout_marginBottom="25dp" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -58,7 +57,6 @@
         android:ems="10"
         android:id="@+id/etLogPassword"
         android:hint="Password"
-        android:text="1000"
         android:layout_above="@+id/btnLogLogIn"
         android:layout_alignStart="@+id/etLogUsername"
         android:layout_marginBottom="18dp" />

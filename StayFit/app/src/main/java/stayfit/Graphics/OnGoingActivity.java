@@ -1,7 +1,6 @@
 package stayfit.Graphics;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -38,18 +37,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -191,7 +180,7 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
         FOOT_STEPS = 0;
-        txtVOnGoingSteps.setText("Pas : "+FOOT_STEPS);
+        txtVOnGoingSteps.setText("Footstep : "+FOOT_STEPS);
 
 
         /* Create an instance of GoogleAPIClient.*/
@@ -204,15 +193,15 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
         }
 
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(5000);
+        mLocationRequest.setInterval(10000);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setFastestInterval(5000);
+        mLocationRequest.setFastestInterval(10000);
     }
 
     @Override
     public final void onSensorChanged(SensorEvent event) {
         FOOT_STEPS++;
-        txtVOnGoingSteps.setText("Pas : " + FOOT_STEPS);
+        txtVOnGoingSteps.setText("Footstep : " + FOOT_STEPS);
     }
 
     @Override
@@ -228,8 +217,6 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
         mapLatsLongsList.add(location.getLongitude());
         NB_OF_MARKERS++;
 
-
-
         if(mapLatsLongsList.size()>2)
         {
             int size=mapLatsLongsList.size();
@@ -243,8 +230,8 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
             if(COVERED_DISTANCE>0)
             {
                 long elapsedSeconds = (SystemClock.elapsedRealtime() - chrnmtOnGoingCrono.getBase())/1000;
-                AVERAGE_SPEED=((Number)elapsedSeconds).intValue()/COVERED_DISTANCE;
-                txtVOnGoingSpeedAverage.setText("Vitesse moyenne: "+AVERAGE_SPEED);
+                AVERAGE_SPEED=COVERED_DISTANCE/((Number)elapsedSeconds).intValue();
+                txtVOnGoingSpeedAverage.setText("Average Speed: "+AVERAGE_SPEED);
             }
         }
 
@@ -255,7 +242,6 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
 
     protected void onStart() {
         mGoogleApiClient.connect();
-
         super.onStart();
     }
 

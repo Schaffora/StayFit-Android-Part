@@ -56,7 +56,7 @@
         android:layout_alignEnd="@+id/txtVOnGoingDistance" />
 
     <TextView
-        android:text="Vitesse moyenne: 0"
+        android:text="Average speed: 0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/txtVOnGoingDistance"
@@ -65,7 +65,7 @@
         android:layout_toEndOf="@+id/chrnmtOnGoingCrono" />
 
     <TextView
-        android:text="Calories Brûlées: 0"
+        android:text="Calories Burned: 0"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@+id/txtVOnGoingSteps"

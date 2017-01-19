@@ -1,9 +1,8 @@
 package stayfit.Graphics;
 
-import android.content.Context;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -12,17 +11,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import stayfit.DataBase.DataSample;
@@ -64,7 +52,7 @@ public class EditProfileActivity extends AppCompatActivity {
 
         /* Value initilisation */
         npWeight.setMinValue(20);
-        npWeight.setMaxValue(200);
+        npWeight.setMaxValue(110);
         npSize.setMinValue(50);
         npSize.setMaxValue(210);
 

@@ -1,26 +1,17 @@
 package stayfit.Graphics;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.content.res.AssetManager;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
 
 import stayfit.DataBase.DataSample;
@@ -122,7 +113,6 @@ public class MainActivity extends AppCompatActivity {
             case 0:
                 if (resultCode == RESULT_OK) {
                     Log.i("ActivityResult", "Result_OK");
-                    Toast.makeText(this, "New user was created. ", Toast.LENGTH_LONG).show();
                     dba.DataBaseRefresh();
                     users=dba.getUsers();
                     dataSamples=dba.getDataSamples();

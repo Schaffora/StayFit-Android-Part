@@ -1,25 +1,14 @@
 package stayfit.Graphics;
 
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import stayfit.DataBase.DataSample;
@@ -137,7 +126,6 @@ public class HomeActivity extends AppCompatActivity {
         switch(requestCode){
             case 100:
                 if (resultCode == RESULT_OK) {
-                    Toast.makeText(this, "New user was created. ", Toast.LENGTH_LONG).show();
                     dba.DataBaseRefresh();
                     users=dba.getUsers();
                     dataSamples=dba.getDataSamples();
