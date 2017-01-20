@@ -76,13 +76,17 @@ public class MainActivity extends AppCompatActivity {
                 {
                     if(users.get(i).Pseudo.equals(etLogUserName.getText().toString()) && users.get(i).MDP.equals(etLogPassword.getText().toString()))
                     {
+                        //TODO: object rather than string
                         ActualUser =users.get(i).Pseudo;
                         ActualUserMDP = users.get(i).MDP;
+
+                        User currentUser= users.get(i);
 
                         if(users.get(i).Weight !=0)
                         {
                             Intent intent = new Intent(MainActivity.this, HomeActivity.class);
                             intent.putExtra("actualUser", ActualUser);
+                            intent.putExtra("currentUser", currentUser);
                             startActivityForResult(intent, ACTIVITY_RESULT_HOME);
 
                         }

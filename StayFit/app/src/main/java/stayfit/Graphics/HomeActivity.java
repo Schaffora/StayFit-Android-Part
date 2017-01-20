@@ -36,6 +36,9 @@ public class HomeActivity extends AppCompatActivity {
     /* Database acesser */
     private DatabaseAcesser dba;
 
+    /* current user */
+    private User currentUser;
+
     /* Intent OnCreate*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ public class HomeActivity extends AppCompatActivity {
 
         if (extras != null) {
             actualUser= intent.getStringExtra("actualUser");
+            currentUser= (User)intent.getSerializableExtra("currentUser");
         }
         else
         {
@@ -82,6 +86,7 @@ public class HomeActivity extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intent = new Intent(HomeActivity.this, OnGoingActivity.class);
                 intent.putExtra("actualUser", finalActualUser);
+                intent.putExtra("currentUser", currentUser);
                 if(rbtnHomeWalk.isChecked()==true)
                 {
                     intent.putExtra("ChoosenActivity", "walk");
