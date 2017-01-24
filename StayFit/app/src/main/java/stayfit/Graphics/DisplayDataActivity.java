@@ -62,7 +62,8 @@ public class DisplayDataActivity extends FragmentActivity implements OnMapReadyC
         int dtTime=dataSample.Duration;
         int pathDist=dataSample.Distance;
 
-        float averageSpeed= pathDist/dtTime;
+        double averageSpeed= (double)pathDist/dtTime;
+        averageSpeed = (double) Math.round(averageSpeed * 100) / 100;
 
         txtVMoy.setText(averageSpeed+"");
         txtFootSteps.setText(dataSample.Steps+"");

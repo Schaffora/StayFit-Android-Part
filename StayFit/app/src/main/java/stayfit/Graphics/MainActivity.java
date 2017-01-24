@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
                 {
                     if(users.get(i).Pseudo.equals(etLogUserName.getText().toString()) && users.get(i).MDP.equals(etLogPassword.getText().toString()))
                     {
-                        //TODO: object rather than string
                         ActualUser =users.get(i).Pseudo;
                         ActualUserMDP = users.get(i).MDP;
 
