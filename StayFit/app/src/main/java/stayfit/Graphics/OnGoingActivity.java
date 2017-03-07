@@ -149,7 +149,7 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
 
             int age = d1.compareTo(toDay);
 
-            userAge=age;
+            userAge = age;
 
 //            CALORIES = (int) (((age * 0.2017) - (currentUser.Weight * 0.09036) + (150 * 0.6309) - 55.0969) * elapsedSeconds / 4.184);
 //          Calories Burned = [(Age x 0.2017) — (Weight x 0.09036) + (Heart Rate x 0.6309) — 55.0969] x Time / 4.184.
@@ -257,7 +257,7 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
 
                 //Update calories
                 CALORIES = (int) (((userAge * 0.2017) - (currentUser.Weight * 0.09036) + (150 * 0.6309) - 55.0969) * elapsedSeconds / 4.184);
-                txtVOnGoingKalories.setText("Calories burned: "+ CALORIES);
+                txtVOnGoingKalories.setText("Calories burned: " + CALORIES);
             }
         }
 
