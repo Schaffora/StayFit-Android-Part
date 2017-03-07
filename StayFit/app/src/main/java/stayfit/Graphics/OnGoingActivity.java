@@ -40,11 +40,8 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 
 import stayfit.DataBase.DataSample;
 import stayfit.DataBase.DatabaseAcesser;
@@ -252,7 +249,8 @@ public class OnGoingActivity extends FragmentActivity implements OnMapReadyCallb
             txtVOnGoingDistance.setText("Distance " + COVERED_DISTANCE);
             if (COVERED_DISTANCE > 0) {
                 long elapsedSeconds = (SystemClock.elapsedRealtime() - chrnmtOnGoingCrono.getBase()) / 1000;
-                AVERAGE_SPEED = COVERED_DISTANCE / ((Number) elapsedSeconds).intValue();
+                AVERAGE_SPEED =  COVERED_DISTANCE / ((Number) elapsedSeconds).doubleValue();
+                AVERAGE_SPEED = (double) Math.round(AVERAGE_SPEED * 100) / 100;
                 txtVOnGoingSpeedAverage.setText("Average Speed: " + AVERAGE_SPEED);
 
                 //Update calories
